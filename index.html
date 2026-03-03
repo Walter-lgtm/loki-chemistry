@@ -3,35 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loki | Лаборатория Алхимика v
-
-2.0</title>
+    <title>Loki | Лаборатория Алхимика v2.1</title>
     <style>
         body { background: #0a0f0d; color: #2ecc71; font-family: 'Times New Roman', serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 10px; }
         .card { background: #111; border: 1px solid #27ae60; padding: 25px; border-radius: 20px; box-shadow: 0 0 30px #2ecc7133; max-width: 850px; width: 95%; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
         h1 { font-size: 1.6rem; text-shadow: 0 0 15px #2ecc71; margin-bottom: 10px; color: #2ecc71; }
         .quote { font-style: italic; color: #2ecc71; margin-bottom: 20px; opacity: 0.9; font-size: 0.9rem; }
-        
-        /* Поле идентификации */
         .user-info { margin-bottom: 25px; background: #0d1a12; padding: 15px; border-radius: 10px; border: 1px dashed #27ae60; }
         .user-info input { background: #000; color: #fff; border: 1px solid #27ae60; padding: 10px; width: 90%; text-align: center; font-size: 1rem; border-radius: 5px; outline: none; }
-        .user-info input:focus { box-shadow: 0 0 10px #2ecc71; }
-
         h2 { font-size: 1.1rem; color: #fff; border-bottom: 1px solid #27ae60; padding-bottom: 5px; margin-top: 25px; text-align: left; }
         .table-wrapper { width: 100%; overflow-x: auto; margin: 15px 0; border: 1px solid #27ae60; border-radius: 8px; }
-        table { width: 100%; border-collapse: collapse; background: #000; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; background: #000; min-width: 700px; }
         th, td { border: 1px solid #27ae60; padding: 10px; text-align: center; font-size: 0.85rem; }
         th { background: #0d1a12; color: #2ecc71; }
         select { background: #000; color: #2ecc71; border: 1px solid #27ae60; padding: 6px; width: 100%; cursor: pointer; font-family: inherit; }
-        
-        .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 15px auto; }
+        .check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 15px auto; width: 100%; }
         .check-item { display: flex; align-items: center; background: #050505; padding: 10px; border: 1px solid #1a1a1a; border-radius: 8px; }
         input[type="checkbox"] { accent-color: #2ecc71; transform: scale(1.3); margin-right: 12px; }
-        
         button { background: #27ae60; color: #0a0f0d; border: none; padding: 18px 40px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 1.1rem; transition: 0.4s; margin-top: 20px; width: 100%; max-width: 300px; }
         button:hover:not(:disabled) { background: #2ecc71; box-shadow: 0 0 25px #2ecc71; transform: translateY(-2px); }
-        button:disabled { background: #333; color: #666; cursor: not-allowed; }
-        
+        button:disabled { background: #333; color: #666; }
         #result { margin-top: 25px; font-weight: bold; font-size: 1.2rem; min-height: 60px; color: #fff; text-shadow: 0 0 10px #2ecc71; }
         .formula-tag { color: #fff; font-weight: bold; background: #1a1a1a; padding: 3px 8px; border-radius: 4px; }
         sub { font-size: 0.7em; vertical-align: sub; line-height: 0; }
@@ -41,67 +32,74 @@
 <body>
     <div class="card">
         <h1>L & ⅂ | Лаборатория Алхимика</h1>
-        <p class="quote">«Меняй Мир к лучшему»</p>
+        <p class="quote">«Химия — это наука об изменениях... Меняй Мир к лучшему»</p>
 
         <div class="user-info">
             <input type="text" id="student_name" placeholder="Введите Фамилию, Имя, Класс" autocomplete="off">
         </div>
 
-        <h2>1. Оксиды</h2>
+        <h2>1. Оксиды: Назовите и классифицируйте</h2>
         <div class="table-wrapper">
             <table>
-                <tr><th>Формула</th><th>Название</th><th>Класс</th><th>Тип</th></tr>
+                <tr><th>Формула</th><th>Название (систематическое)</th><th>Класс</th><th>Тип</th></tr>
                 <tr>
                     <td><span class="formula-tag">Na<sub>2</sub>O</span></td>
-                    <td><select id="q1_1"><option value="0">выбор...</option><option value="1">Оксид натрия</option><option value="w">Пероксид</option></select></td>
-                    <td><select id="q1_2"><option value="0">выбор...</option><option value="1">Оксиды</option><option value="w">Соли</option></select></td>
-                    <td><select id="q1_3"><option value="0">выбор...</option><option value="1">Основный</option><option value="w">Кислотный</option></select></td>
+                    <td><select id="q1_1"><option value="0">выбор...</option><option value="w">Оксид натрия(I)</option><option value="1">Оксид натрия</option><option value="w">Пероксид натрия</option><option value="w">Гидрид натрия</option></select></td>
+                    <td><select id="q1_2"><option value="0">выбор...</option><option value="w">Основания</option><option value="w">Соли</option><option value="1">Оксиды</option><option value="w">Гидроксиды</option></select></td>
+                    <td><select id="q1_3"><option value="0">выбор...</option><option value="w">Кислотный</option><option value="1">Основный</option><option value="w">Амфотерный</option><option value="w">Несолеобразующий</option></select></td>
                 </tr>
                 <tr>
                     <td><span class="formula-tag">CO</span></td>
-                    <td><select id="q1_4"><option value="0">выбор...</option><option value="1">Оксид углерода(II)</option><option value="w">Углекислый газ</option></select></td>
-                    <td><select id="q1_5"><option value="0">выбор...</option><option value="1">Оксиды</option><option value="w">Газы</option></select></td>
-                    <td><select id="q1_6"><option value="0">выбор...</option><option value="1">Несолеобразующий</option><option value="w">Амфотерный</option></select></td>
+                    <td><select id="q1_4"><option value="0">выбор...</option><option value="w">Углекислый газ</option><option value="w">Карбид углерода</option><option value="1">Оксид углерода(II)</option><option value="w">Оксид углерода(IV)</option></select></td>
+                    <td><select id="q1_5"><option value="0">выбор...</option><option value="w">Кислоты</option><option value="1">Оксиды</option><option value="w">Ангидриды</option><option value="w">Газы</option></select></td>
+                    <td><select id="q1_6"><option value="0">выбор...</option><option value="w">Основный</option><option value="w">Кислотный</option><option value="1">Несолеобразующий</option><option value="w">Амфотерный</option></select></td>
                 </tr>
             </table>
         </div>
 
-        <h2>2. Основания (KOH)</h2>
+        <h2>2. Основания: Классификация KOH</h2>
         <div class="table-wrapper">
             <table>
-                <tr><th>Название</th><th>Растворимость</th><th>Сила</th><th>Тип</th></tr>
+                <tr><th>Название</th><th>Растворимость</th><th>Степень</th><th>По основности</th></tr>
                 <tr>
-                    <td><select id="q2_1"><option value="0">выбор...</option><option value="1">Гидроксид калия</option><option value="w">Оксид калия</option></select></td>
-                    <td><select id="q2_2"><option value="0">выбор...</option><option value="1">Растворимое</option><option value="w">Нерастворимое</option></select></td>
-                    <td><select id="q2_3"><option value="0">выбор...</option><option value="1">Сильное</option><option value="w">Слабое</option></select></td>
-                    <td><select id="q2_4"><option value="0">выбор...</option><option value="1">Одноосновное</option><option value="w">Двухосновное</option></select></td>
+                    <td><select id="q2_1"><option value="0">выбор...</option><option value="w">Оксид калия</option><option value="1">Гидроксид калия</option><option value="w">Гидроксид кальция</option><option value="w">Калиевая щелочь</option></select></td>
+                    <td><select id="q2_2"><option value="0">выбор...</option><option value="w">Нерастворимое</option><option value="1">Растворимое (щелочь)</option><option value="w">Малорастворимое</option><option value="w">Амфотерное</option></select></td>
+                    <td><select id="q2_3"><option value="0">выбор...</option><option value="w">Слабое</option><option value="w">Среднее</option><option value="1">Сильное</option><option value="w">Неэлектролит</option></select></td>
+                    <td><select id="q2_4"><option value="0">выбор...</option><option value="w">Двухосновное</option><option value="w">Трехосновное</option><option value="1">Одноосновное</option><option value="w">Не основное</option></select></td>
                 </tr>
             </table>
         </div>
 
-        <h2>3. Кислоты (HF)</h2>
+        <h2>3. Кислоты: Классификация HF</h2>
         <div class="table-wrapper">
             <table>
-                <tr><th>Название</th><th>Кислород</th><th>Сила</th><th>Стабильность</th></tr>
+                <tr><th>Название</th><th>Кислород</th><th>Диссоциация</th><th>Основность</th><th>Раствор.</th><th>Летучесть</th><th>Стабильность</th></tr>
                 <tr>
-                    <td><select id="q3_1"><option value="0">выбор...</option><option value="1">Фтороводородная</option><option value="w">Соляная</option></select></td>
-                    <td><select id="q3_2"><option value="0">выбор...</option><option value="1">Бескислородная</option><option value="w">Кислородная</option></select></td>
-                    <td><select id="q3_3"><option value="0">выбор...</option><option value="1">Слабая</option><option value="w">Сильная</option></select></td>
-                    <td><select id="q3_4"><option value="0">выбор...</option><option value="1">Стабильная</option><option value="w">Нестабильная</option></select></td>
+                    <td><select id="q3_1"><option value="0">выбор...</option><option value="w">Плавиковая (газ)</option><option value="w">Соляная</option><option value="1">Фтороводородная</option><option value="w">Фтористая</option></select></td>
+                    <td><select id="q3_2"><option value="0">выбор...</option><option value="1">Бескислородная</option><option value="w">Кислородсодержащая</option><option value="w">Сложная</option><option value="w">Бинарная</option></select></td>
+                    <td><select id="q3_3"><option value="0">выбор...</option><option value="w">Сильная</option><option value="1">Слабая</option><option value="w">Средней силы</option><option value="w">Не диссоциирует</option></select></td>
+                    <td><select id="q3_4"><option value="0">выбор...</option><option value="1">Одноосновная</option><option value="w">Двухосновная</option><option value="w">Трехосновная</option><option value="w">Безосновная</option></select></td>
+                    <td><select id="q3_5"><option value="0">выбор...</option><option value="w">Нерастворимая</option><option value="w">Летучая</option><option value="1">Растворимая</option><option value="w">Малорастворимая</option></select></td>
+                    <td><select id="q3_6"><option value="0">выбор...</option><option value="1">Летучая</option><option value="w">Нелетучая</option><option value="w">Твердая</option><option value="w">Тяжелая</option></select></td>
+                    <td><select id="q3_7"><option value="0">выбор...</option><option value="w">Нестабильная</option><option value="w">Разлагаемая</option><option value="1">Стабильная</option><option value="w">Взрывоопасная</option></select></td>
                 </tr>
             </table>
         </div>
 
-        <h2>4. Реакции CaO</h2>
+        <h2>4. С чем взаимодействует CaO?</h2>
         <div class="check-grid">
             <div class="check-item"><input type="checkbox" id="q4_1"> H<sub>2</sub>SO<sub>4</sub></div>
             <div class="check-item"><input type="checkbox" id="q4_2"> NaOH</div>
+            <div class="check-item"><input type="checkbox" id="q4_3"> MgO</div>
             <div class="check-item"><input type="checkbox" id="q4_4"> H<sub>2</sub>O</div>
+            <div class="check-item"><input type="checkbox" id="q4_5"> KOH</div>
         </div>
 
-        <h2>5. Реакции KOH</h2>
+        <h2>5. С чем взаимодействует KOH?</h2>
         <div class="check-grid">
             <div class="check-item"><input type="checkbox" id="q5_1"> CO<sub>2</sub></div>
+            <div class="check-item"><input type="checkbox" id="q5_2"> LiOH</div>
+            <div class="check-item"><input type="checkbox" id="q5_3"> CaO</div>
             <div class="check-item"><input type="checkbox" id="q5_4"> HBr</div>
             <div class="check-item"><input type="checkbox" id="q5_5"> NaCl</div>
         </div>
@@ -112,7 +110,7 @@
     </div>
 
     <script>
-        const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbzHqAk_eag3a3benjKdpxggJfgNx8-KAk8REGVQYelCrhmJOFD9LMc1Fz4EyHQSj2n7/exec";
+        const GOOGLE_URL = "https://script.google.com";
 
         async function calculateFinal() {
             const name = document.getElementById('student_name').value.trim();
@@ -124,13 +122,18 @@
             let score = 0;
             if (['q1_1','q1_2','q1_3','q1_4','q1_5','q1_6'].every(id => document.getElementById(id).value == "1")) score++;
             if (['q2_1','q2_2','q2_3','q2_4'].every(id => document.getElementById(id).value == "1")) score++;
-            if (['q3_1','q3_2','q3_3','q3_4'].every(id => document.getElementById(id).value == "1")) score++;
-            if (document.getElementById('q4_1').checked && document.getElementById('q4_4').checked && !document.getElementById('q4_2').checked) score++;
-            if (document.getElementById('q5_1').checked && document.getElementById('q5_4').checked && !document.getElementById('q5_5').checked) score++;
+            if (['q3_1','q3_2','q3_3','q3_4','q3_5','q3_6','q3_7'].every(id => document.getElementById(id).value == "1")) score++;
+            
+            let q4 = document.getElementById('q4_1').checked && document.getElementById('q4_4').checked && 
+                     !['q4_2','q4_3','q4_5'].some(id => document.getElementById(id).checked);
+            if (q4) score++;
+
+            let q5 = document.getElementById('q5_1').checked && document.getElementById('q5_4').checked && 
+                     !['q5_2','q5_3','q5_5'].some(id => document.getElementById(id).checked);
+            if (q5) score++;
 
             let rank = score >= 4 ? "Мастер" : score === 3 ? "Практик" : "Ученик";
             
-            // Магия отправки
             try {
                 await fetch(GOOGLE_URL, {
                     method: "POST",
@@ -138,7 +141,7 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ name: name, score: score, rank: rank })
                 });
-                document.getElementById('result').innerHTML = 'ТОЧНОСТЬ: ${score} из 5<br>ДАННЫЕ ОТПРАВЛЕНЫ УЧИТЕЛЮ ХИМИИ.';
+                document.getElementById('result').innerHTML = `ТОЧНОСТЬ: ${score} из 5<br>ДАННЫЕ ОТПРАВЛЕНЫ УЧИТЕЛЮ ХИМИИ.`;
             } catch (e) {
                 document.getElementById('result').innerHTML = `ОШИБКА РЕЗОНАНСА. Но балл: ${score}`;
             }
