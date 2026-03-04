@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L & ⅂ | Бизнес-Калькулятор Кофейни</title>
+    <style>
+        :root { --gold: #d4af37; --bg: #050505; --card: #121212; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .biz-card { background: var(--card); border: 1px solid var(--gold); padding: 30px; border-radius: 10px; max-width: 500px; width: 100%; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        h1 { color: var(--gold); text-align: center; font-size: 1.5rem; letter-spacing: 2px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 0.8rem; color: var(--gold); margin-bottom: 5px; text-transform: uppercase; }
+        input { background: #000; border: 1px solid #333; color: #fff; padding: 12px; width: 100%; border-radius: 5px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: var(--gold); }
+        .res-box { background: #1a1a1a; padding: 20px; border-radius: 8px; margin-top: 25px; border-left: 4px solid var(--gold); }
+        .res-val { font-size: 1.8rem; font-weight: bold; color: var(--gold); display: block; margin-top: 10px; }
+        button { background: var(--gold); color: #000; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #fff; box-shadow: 0 0 15px #fff; }
+    </style>
+</head>
+<body>
+    <div class="biz-card">
+        <h1>L & ⅂ BUSINESS SOLUTIONS</h1>
+        <p style="text-align: center; font-size: 0.9rem; opacity: 0.6;">Анализ окупаемости кофейной точки</p>
+        
+        <div class="input-group">
+            <label>Инвестиции (старт), руб.</label>
+            <input type="number" id="invest" value="500000">
+        </div>
+        <div class="input-group">
+            <label>Аренда + ЗП в месяц, руб.</label>
+            <input type="number" id="fix_costs" value="100000">
+        </div>
+        <div class="input-group">
+            <label>Средний чек чашки, руб.</label>
+            <input type="number" id="avg_check" value="180">
+        </div>
+        <div class="input-group">
+            <label>Чашек в день (прогноз)</label>
+            <input type="number" id="cups_per_day" value="50">
+        </div>
 
+        <button onclick="calculateBiz()">РАССЧИТАТЬ ПРИБЫЛЬ</button>
+
+        <div class="res-box">
+            <span style="font-size: 0.9rem;">Чистая прибыль в месяц:</span>
+            <span id="monthly_profit" class="res-val">0 руб.</span>
+            <hr style="border: 0.5px solid #333; margin: 15px 0;">
+            <span style="font-size: 0.9rem;">Срок окупаемости:</span>
+            <span id="payback" class="res-val">0 мес.</span>
+        </div>
+    </div>
+
+    <script>
+        function calculateBiz() {
+            const invest = parseFloat(document.getElementById('invest').value);
+            const fix = parseFloat(document.getElementById('fix_costs').value);
+            const check = parseFloat(document.getElementById('avg_check').value);
+            const cups = parseFloat(document.getElementById('cups_per_day').value);
+
+            const margin = 0.7; // 70% маржа (кофе — это выгодно!)
+            const revenue = check * cups * 30; // Выручка в месяц
+            const profit = (revenue * margin) - fix;
+
+            document.getElementById('monthly_profit').innerText = Math.round(profit).toLocaleString() + " руб.";
+            
+            if (profit > 0) {
+                const months = invest / profit;
+                document.getElementById('payback').innerText = months.toFixed(1) + " мес.";
+            } else {
+                document.getElementById('payback').innerText = "Никогда (убыток)";
+            }
+        }
+    </script>
+</body>
+</html>
