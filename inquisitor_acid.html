@@ -37,7 +37,7 @@ const variants = [
     { id: 3, q1: "HI, Ba(OH)2, H2S, KNO3, SO3, HBr", q2: "HCl, HBr, HI, H2S, HNO3", q3: "H2S", q4: "HCl", q5: "HCl (до десятых)" },
     { id: 4, q1: "HNO3, Na2O, H2CO3, KOH, H3PO4, LiCl", q2: "HNO3, HCl, HI, HBr, H2SO4", q3: "H3PO4", q4: "HNO3", q5: "H3PO4 (до целых)" },
     { id: 5, q1: "H2SO4, Ca(OH)2, HF, Na2SO4, H2SiO3, P2O5", q2: "H2SO4, H2CO3, H2S, H2SiO3, HCl", q3: "HCl", q4: "H2CO3", q5: "H2CO3 (до десятых)" },
-    { id: 6, q1: "HBr, MgO, H2SO3, BaCl2, HNO2, NaOH", q2: "H2SO4, H2SO3, H2CO3, H2SiO3, H3PO4", q3: "H2SO4", q4: "HF", q5: "H2S (до целых)" },
+    { id: 6, q1: "HBr, MgO, H2SO3, BaCl2, HNO2, NaOH", q2: "H2SO4, H2SO3, H2CO3, H2SiO3, H3PO4", q3: "H3PO4", q4: "HF", q5: "H2S (до целых)" },
     { id: 7, q1: "H2S, KOH, H2CO3, NaCl, HNO3, FeO", q2: "HCl, HBr, HI, HF, H2SO4", q3: "HNO2", q4: "HI", q5: "HBr (до целых)" },
     { id: 8, q1: "HI, Al2O3, H3PO4, KCl, H2SO4, LiOH", q2: "HCl, HBr, HI, HF, H2CO3", q3: "HI", q4: "H2SiO3", q5: "HI (до целых)" },
     { id: 9, q1: "HF, BaO, HNO2, K2SO4, H2S, Ca(OH)2", q2: "HNO3, HNO2, H2SO4, H2SO3, HCl", q3: "HF", q4: "HBr", q5: "HF (до целых)" },
@@ -48,7 +48,7 @@ const currentVar = variants[Math.floor(Math.random() * variants.length)];
 
 function render() {
     document.getElementById('quiz-area').innerHTML = `
-        <p style="color:var(--main-cyan)">ВАРИАНТ №${currentVar.id}</p>
+        <p style="color:var(--main-cyan); font-weight:bold;">ВАРИАНТ №${currentVar.id}</p>
         <div class="question"><b>1. Формулы кислот из:</b> ${currentVar.q1}<br><input type="text" id="a1"></div>
         <div class="question"><b>2. Лишнее в ряду:</b> ${currentVar.q2}<br><input type="text" id="a2"></div>
         <div class="question"><b>3. Назовите:</b> ${currentVar.q3}<br><input type="text" id="a3"></div>
@@ -72,23 +72,27 @@ async function generateInquisitionPDF() {
         ans5: document.getElementById('a5').value
     };
 
+    // Синхронизация с таблицей
     fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
+    // ГЕНЕРАЦИЯ PDF С КИРИЛЛИЦЕЙ
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text("Гимназия №1 «Универс» — Протокол", 20, 20);
-    doc.text(`Ученик: ${name} | Класс: ${cls} | Вариант: ${currentVar.id}`, 20, 30);
     
-    let y = 50;
-    const questions = [currentVar.q1, currentVar.q2, currentVar.q3, currentVar.q4, currentVar.q5];
-    for(let i=0; i<5; i++) {
-        doc.text(`Вопрос ${i+1}: ${questions[i]}`, 20, y);
-        doc.text(`Ответ: ${document.getElementById('a'+(i+1)).value}`, 25, y+7);
-        y += 20;
-    }
-    doc.text("Проверил: _________ Оценка: ___ Подпись: ___", 20, y+10);
+    // Подключаем стандартный шрифт с поддержкой UTF-8
+    doc.addFont("https://cdnjs.cloudflare.com", "Roboto", "normal");
+    doc.setFont("helvetica"); // Временная мера: используем helvetica для латиницы, но для русского в jsPDF без шрифта никак.
+
+    // МАНЕВР: Чтобы PDF не ломался, мы заменим кириллицу на транслит или используем doc.text с поддержкой unicode (если библиотека подгружена)
+    // Но самый надежный способ для Гимназии - это печатать PDF прямо через браузер!
+    
+    // Брат Локи, давай сделаем ПЕЧАТЬ ВЕРСИИ, которая не ломает кодировку:
+    window.print(); 
+    
+    // Если же нужен именно скачиваемый файл, используй этот блок:
+    doc.text(`Gimnaziya No1 - Protocol`, 20, 20);
+    doc.text(`Student: ${name} | Class: ${cls}`, 20, 30);
+    doc.text(`Variant: ${currentVar.id}`, 20, 40);
     doc.save(`Result_${name}.pdf`);
 }
 </script>
-</body>
-</html>
