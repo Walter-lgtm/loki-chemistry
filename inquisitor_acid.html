@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Гимназия №1 «Универс» — Химия 8</title>
     <style>
         :root { --ice: #00d4ff; --dark-bg: #0b0e14; --panel: #161b22; }
@@ -52,12 +53,12 @@ let selectedQ2 = "";
 function render() {
     const area = document.getElementById('quiz-area');
     area.innerHTML = `
-        <div class="question"><b>Задание 1.</b> Выберите все формулы кислот:<br><br>
-            ${currentVar.q1.map(f => `<button class="btn-opt" onclick="toggleQ1(this, '${f}')">${f}</button>`).join('')}
-        </div>
-        <div class="question"><b>Задание 2.</b> Выберите "лишнее" вещество:<br><br>
-            ${currentVar.q2.map(f => `<button class="btn-opt btn-q2" onclick="selectQ2(this, '${f}')">${f}</button>`).join('')}
-        </div>
+        <div class="options-grid">
+    ${currentVar.q1.map(f => `<button class="btn-opt" onclick="toggleQ1(this, '${f}')">${f}</button>`).join('')}
+</div>
+        <div class="options-grid">
+    ${currentVar.q2.map(f => `<button class="btn-opt btn-q2" onclick="selectQ2(this, '${f}')">${f}</button>`).join('')}
+</div>
         <div class="question"><b>Задание 3.</b> Назовите кислоту ${currentVar.q3}:<br><input type="text" id="a3"></div>
         <div class="question"><b>Задание 4.</b> Остаток и валентность для ${currentVar.q4} (через запятую):<br><input type="text" id="a4"></div>
         <div class="question"><b>Задание 5.</b> w(H) в % в ${currentVar.q5} (до десятых):<br><input type="text" id="a5"></div>
