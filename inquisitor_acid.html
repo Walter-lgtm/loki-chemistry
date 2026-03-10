@@ -65,7 +65,27 @@ function render() {
 }
 render();
 
-function generateInquisitionPDF() {
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwi3xoN1FJI4P3Y8tr8v2CPPeP6g731jb-opzEj654JXV8QHGbUiqs9NF4oismS13YnOg/exec";
+
+function syncData() {
+    const payload = {
+        name: document.getElementById('studentName').value,
+        className: document.getElementById('studentClass').value,
+        variantId: currentVar.id,
+        ans1: document.getElementById('a1').value,
+        ans2: document.getElementById('a2').value,
+        ans3: document.getElementById('a3').value,
+        ans4: document.getElementById('a4').value,
+        ans5: document.getElementById('a5').value
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Важно для Google Script
+        body: JSON.stringify(payload)
+    });
+}
+    function generateInquisitionPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const name = document.getElementById('studentName').value || "Анонимный Падаван";
