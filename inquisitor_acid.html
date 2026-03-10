@@ -79,34 +79,66 @@ function render() {
 }
 render();
 
-function finishInquisition() {
+    function finishInquisition() {
     const name = document.getElementById('studentName').value;
     const cls = document.getElementById('studentClass').value;
-    if(!name || !cls) { alert("Брат! Введите Имя и Класс!"); return; }
+    if(!name || !cls) { alert("Введите Имя и Класс!"); return; }
 
-    const results = {
-        name: name,
-        className: cls,
-        variant: currentVar.id,
-        answers: [
-            document.getElementById('a1').value,
-            document.getElementById('a2').value,
-            document.getElementById('a3').value,
-            document.getElementById('a4').value,
-            document.getElementById('a5').value
-        ]
+    const a1 = document.getElementById('a1').value.toLowerCase().trim();
+    const a2 = document.getElementById('a2').value.toLowerCase().trim();
+    const a3 = document.getElementById('a3').value.toLowerCase().trim();
+    const a4 = document.getElementById('a4').value.toLowerCase().trim();
+    const a5 = document.getElementById('a5').value.replace(',', '.').trim();
+
+    let score = 0;
+
+    // МАТРИЦА ИСТИНЫ (КЛЮЧИ L & ⅂)
+    const keys = {
+        1: { a1: "h2so4, hno3, h3po4", a2: "h2so4", a3: "угольная", a4: "so3, ii", a5: "2.0" },
+        2: { a1: "hcl, h2so3, hno2", a2: "hcl", a3: "азотная", a4: "po4, iii", a5: "1.6" },
+        3: { a1: "hi, h2s, hbr", a2: "hno3", a3: "сероводородная", a4: "cl, i", a5: "2.7" },
+        4: { a1: "hno3, h2co3, h3po4", a2: "h2so4", a3: "фосфорная", a4: "no3, i", a5: "3" },
+        5: { a1: "h2so4, hf, h2sio3", a2: "hcl", a3: "соляная", a4: "co3, ii", a5: "3.2" },
+        6: { a1: "hbr, h2so3, hno2", a2: "h3po4", a3: "серная", a4: "f, i", a5: "6" },
+        7: { a1: "h2s, h2co3, hno3", a2: "h2so4", a3: "азотистая", a4: "i, i", a5: "1" },
+        8: { a1: "hi, h3po4, h2so4", a2: "h2co3", a3: "йодоводородная", a4: "sio3, ii", a5: "1" },
+        9: { a1: "hf, hno2, h2s", a2: "hcl", a3: "фтороводородная", a4: "br, i", a5: "5" },
+        10: { a1: "h2sio3, hcl, h3po4", a2: "h2s", a3: "сернистая", a4: "no2, i", a5: "2.4" }
     };
 
-    // ОТПРАВКА ДАННЫХ
-    fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(results)
-    }).then(() => console.log("Данные ушли"));
+    const k = keys[currentVar.id];
 
-    // ПОДГОТОВКА К ПЕЧАТИ
-    document.getElementById('printHeader').innerText = `Ученик: ${name} | Класс: ${cls} | Вариант: ${currentVar.id} | Дата: ${new Date().toLocaleDateString()}`;
+    // ПРОВЕРКА (Алгоритм сравнения)
+    if (a1.includes(k.a1.split(', ')[0])) score++; // Упрощенная проверка для списка
+    if (a2.includes(k.a2)) score++;
+    if (a3 === k.a3) score++;
+    if (a4.includes(k.a4.split(', ')[0])) score++;
+    if (a5 === k.a5) score++;
+
+    // КРИТЕРИИ ГИМНАЗИИ
+    let grade = "2";
+    if (score === 5) grade = "5";
+    else if (score === 4) grade = "4";
+    else if (score === 3) grade = "3";
+
+    // ПАКЕТ ДЛЯ ТАБЛИЦЫ
+    const results = {
+        name, className: cls, variant: currentVar.id,
+        ans1: a1, ans2: a2, ans3: a3, ans4: a4, ans5: a5,
+        totalScore: score, grade: grade
+    };
+
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST", mode: "no-cors",
+        body: JSON.stringify(results)
+    });
+
+    // ОФОРМЛЕНИЕ PDF
+    document.getElementById('printHeader').innerHTML = `
+        <div style="text-align:center; border:2px solid black; padding:10px;">
+            ГЕЙМ ОВЕР. РЕЗУЛЬТАТ: ${score} из 5 | ОЦЕНКА: ${grade}<br>
+            Ученик: ${name} | Класс: ${cls}
+        </div>`;
     window.print();
 }
 </script>
