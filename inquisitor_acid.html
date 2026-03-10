@@ -53,15 +53,27 @@ let selectedQ2 = "";
 function render() {
     const area = document.getElementById('quiz-area');
     area.innerHTML = `
-        <div class="options-grid">
-    ${currentVar.q1.map(f => `<button class="btn-opt" onclick="toggleQ1(this, '${f}')">${f}</button>`).join('')}
-</div>
-        <div class="options-grid">
-    ${currentVar.q2.map(f => `<button class="btn-opt btn-q2" onclick="selectQ2(this, '${f}')">${f}</button>`).join('')}
-</div>
-        <div class="question"><b>Задание 3.</b> Назовите кислоту ${currentVar.q3}:<br><input type="text" id="a3"></div>
-        <div class="question"><b>Задание 4.</b> Остаток и валентность для ${currentVar.q4} (через запятую):<br><input type="text" id="a4"></div>
-        <div class="question"><b>Задание 5.</b> w(H) в % в ${currentVar.q5} (до десятых):<br><input type="text" id="a5"></div>
+        <p style="color:var(--ice)"><b>АКТИВИРОВАН ВАРИАНТ №${currentVar.id}</b></p>
+        
+        <div class="question">
+            <b>Задание 1.</b> Из предложенного списка веществ выберите только формулы кислот:
+            <div class="options-grid">
+                ${currentVar.q1.map(f => `<button class="btn-opt" onclick="toggleQ1(this, '${f}')">${f}</button>`).join('')}
+            </div>
+        </div>
+
+        <div class="question">
+            <b>Задание 2.</b> Определите «лишнее» вещество в ряду:
+            <div class="options-grid">
+                ${currentVar.q2.map(f => `<button class="btn-opt btn-q2" onclick="selectQ2(this, '${f}')">${f}</button>`).join('')}
+            </div>
+        </div>
+
+        <div class="question"><b>Задание 3.</b> Напишите название кислоты для формулы: <b>${currentVar.q3}</b><br><br><input type="text" id="a3" placeholder="Ваш ответ..."></div>
+        
+        <div class="question"><b>Задание 4.</b> Для кислоты <b>${currentVar.q4}</b> укажите формулу кислотного остатка и его валентность:<br><br><input type="text" id="a4" placeholder="Напр: SO4, II"></div>
+        
+        <div class="question"><b>Задание 5.</b> Вычислите массовую долю водорода (в %) в соединении: <b>${currentVar.q5}</b><br><br><input type="text" id="a5" placeholder="Напр: 2.0"></div>
     `;
 }
 
