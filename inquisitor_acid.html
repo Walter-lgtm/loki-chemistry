@@ -5,142 +5,93 @@
     <title>Гимназия №1 «Универс» — Химия 8</title>
     <style>
         :root { --ice: #00d4ff; --dark-bg: #0b0e14; --panel: #161b22; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--dark-bg); color: #e0e0e0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: var(--panel); padding: 30px; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 20px rgba(0,212,255,0.1); }
-        h1 { color: var(--ice); text-align: center; text-transform: uppercase; border-bottom: 2px solid var(--ice); padding-bottom: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark-bg); color: #e0e0e0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: var(--panel); padding: 30px; border-radius: 8px; border: 1px solid #444; }
+        h1 { color: var(--ice); text-align: center; border-bottom: 2px solid var(--ice); padding-bottom: 10px; }
         .info-block { display: flex; gap: 15px; margin-bottom: 30px; }
-        input[type="text"] { background: #0d1117; border: 1px solid #444; color: var(--ice); padding: 12px; width: 100%; border-radius: 4px; font-size: 16px; outline: none; }
-        .question { margin-bottom: 25px; padding: 15px; border-left: 4px solid var(--ice); background: #1c2128; line-height: 1.6; }
-        .btn { background: var(--ice); color: #000; padding: 18px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; font-size: 18px; transition: 0.3s; }
-        .btn:hover { background: #fff; box-shadow: 0 0 15px var(--ice); }
-        
-        /* СТИЛЬ ПЕЧАТИ (ДЛЯ PDF) */
-        @media print {
-            body { background: white !important; color: black !important; padding: 0; }
-            .container { border: none; box-shadow: none; width: 100%; max-width: 100%; background: white !important; }
-            .btn, #studentName, #studentClass { display: none !important; }
-            .question { background: white !important; border-left: 2px solid black !important; color: black !important; page-break-inside: avoid; }
-            input { border: none !important; border-bottom: 1px solid #000 !important; color: black !important; background: transparent !important; }
-            h1 { color: black !important; border-bottom: 2px solid black !important; }
-            .print-only { display: block !important; font-weight: bold; margin-bottom: 20px; }
-        }
+        input[type="text"] { background: #0d1117; border: 1px solid #444; color: var(--ice); padding: 12px; width: 100%; border-radius: 4px; outline: none; }
+        .question { margin-bottom: 25px; padding: 20px; border-left: 4px solid var(--ice); background: #1c2128; }
+        .btn-opt { background: #2c333a; color: white; border: 1px solid #444; padding: 10px 15px; margin: 5px; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+        .btn-opt.selected { background: var(--ice); color: black; font-weight: bold; border-color: white; }
+        .finish-btn { background: var(--ice); color: black; padding: 18px; border: none; width: 100%; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        @media print { .finish-btn, input, .btn-opt { display: none !important; } .selected { display: inline-block !important; border: 1px solid black !important; padding: 5px !important; } body { background: white; color: black; } .container { border: none; } .print-only { display: block !important; } }
         .print-only { display: none; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <div class="print-only" id="printHeader">Гимназия №1 «Универс» — Проверочная работа</div>
-    <h1>Кислоты: состав и номенклатура</h1>
-    
+    <div class="print-only" id="ph" style="font-weight: bold; margin-bottom: 20px;"></div>
+    <h1>Кислоты: Состав и Номенклатура</h1>
     <div class="info-block">
         <input type="text" id="studentName" placeholder="Имя и первая буква Фамилии">
-        <input type="text" id="studentClass" placeholder="Класс (напр. 8А)">
+        <input type="text" id="studentClass" placeholder="Класс">
     </div>
-
     <div id="quiz-area"></div>
-
-    <button class="btn" onclick="finishInquisition()">СФОРМИРОВАТЬ ОТЧЕТ И ОТПРАВИТЬ</button>
-    
-    <div class="print-only" style="margin-top: 40px;">
-        <hr>
-        <p>Итоговый балл: _________ | Оценка: _________</p>
-        <p>Проверил: ____________________ / Локи / &nbsp;&nbsp;&nbsp; Подпись: _________</p>
-    </div>
+    <button class="finish-btn" onclick="finishInquisition()">ЗАВЕРШИТЬ И СОХРАНИТЬ РЕЗУЛЬТАТ</button>
 </div>
 
 <script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyW4WxWxHyuvFrYP1YYs7-aLkh7Kznk7K-lmyVgi6Mrs6cJm1sMpVsEz7xucUshjooNFw/exec";
-
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUuuSWPPNzDfKy7iXUy3DzgRtMArBvJmLhvt9R65XnjEW-Rt4fCbiU2N6RO4hl_YI77Q/exec";
 const variants = [
-    { id: 1, q1: "LiOH, H2SO4, NaCl, HNO3, CaO, H3PO4", q2: "HCl, HBr, HI, H2S, H2SO4", q3: "H2CO3", q4: "H2SO3", q5: "H2SO4 (до десятых)" },
-    { id: 2, q1: "K2O, HCl, NaOH, H2SO3, MgCl2, HNO2", q2: "H2SO4, H2CO3, H3PO4, H2SO3, HCl", q3: "HNO3", q4: "H3PO4", q5: "HNO3 (до десятых)" },
-    { id: 3, q1: "HI, Ba(OH)2, H2S, KNO3, SO3, HBr", q2: "HCl, HBr, HI, H2S, HNO3", q3: "H2S", q4: "HCl", q5: "HCl (до десятых)" },
-    { id: 4, q1: "HNO3, Na2O, H2CO3, KOH, H3PO4, LiCl", q2: "HNO3, HCl, HI, HBr, H2SO4", q3: "H3PO4", q4: "HNO3", q5: "H3PO4 (до целых)" },
-    { id: 5, q1: "H2SO4, Ca(OH)2, HF, Na2SO4, H2SiO3, P2O5", q2: "H2SO4, H2CO3, H2S, H2SiO3, HCl", q3: "HCl", q4: "H2CO3", q5: "H2CO3 (до десятых)" },
-    { id: 6, q1: "HBr, MgO, H2SO3, BaCl2, HNO2, NaOH", q2: "H2SO4, H2SO3, H2CO3, H2SiO3, H3PO4", q3: "H2SO4", q4: "HF", q5: "H2S (до целых)" },
-    { id: 7, q1: "H2S, KOH, H2CO3, NaCl, HNO3, FeO", q2: "HCl, HBr, HI, HF, H2SO4", q3: "HNO2", q4: "HI", q5: "HBr (до целых)" },
-    { id: 8, q1: "HI, Al2O3, H3PO4, KCl, H2SO4, LiOH", q2: "HCl, HBr, HI, HF, H2CO3", q3: "HI", q4: "H2SiO3", q5: "HI (до целых)" },
-    { id: 9, q1: "HF, BaO, HNO2, K2SO4, H2S, Ca(OH)2", q2: "HNO3, HNO2, H2SO4, H2SO3, HCl", q3: "HF", q4: "HBr", q5: "HF (до целых)" },
-    { id: 10, q1: "H2SiO3, NaOH, HCl, Na2CO3, H3PO4, MgO", q2: "HCl, HBr, HI, HF, H2S", q3: "H2SO3", q4: "HNO2", q5: "H2SO3 (до десятых)" }
+    { id: 1, q1: ["LiOH", "H2SO4", "NaCl", "HNO3", "CaO", "H3PO4"], a1: ["H2SO4", "HNO3", "H3PO4"], q2: ["HCl", "HBr", "HI", "H2S", "H2SO4"], a2: "H2SO4", q3: "H2CO3", a3: "угольная", q4: "H2SO3", a4: "so3, ii", q5: "H2SO4", a5: "2.0" }
+    // Брат Локи, добавь остальные варианты по этой схеме
 ];
 
 const currentVar = variants[Math.floor(Math.random() * variants.length)];
+let selectedQ1 = [];
+let selectedQ2 = "";
 
 function render() {
-    document.getElementById('quiz-area').innerHTML = `
-        <p style="color:var(--ice)"><b>АКТИВИРОВАН ВАРИАНТ №${currentVar.id}</b></p>
-        <div class="question"><b>Задание 1.</b> Из предложенного списка веществ выпишите только формулы кислот:<br><i>${currentVar.q1}</i><br><br><input type="text" id="a1" placeholder="Ваш ответ..."></div>
-        <div class="question"><b>Задание 2.</b> Определите «лишнее» вещество в ряду и кратко объясните почему:<br><i>${currentVar.q2}</i><br><br><input type="text" id="a2" placeholder="Ваш ответ..."></div>
-        <div class="question"><b>Задание 3.</b> Напишите название кислоты для формулы: <b>${currentVar.q3}</b><br><br><input type="text" id="a3" placeholder="Ваш ответ..."></div>
-        <div class="question"><b>Задание 4.</b> Для кислоты <b>${currentVar.q4}</b> укажите формулу кислотного остатка и его валентность:<br><br><input type="text" id="a4" placeholder="Ваш ответ..."></div>
-        <div class="question"><b>Задание 5.</b> Вычислите массовую долю водорода (в %) в соединении: <b>${currentVar.q5}</b><br><br><input type="text" id="a5" placeholder="Ваш ответ..."></div>
+    const area = document.getElementById('quiz-area');
+    area.innerHTML = `
+        <div class="question"><b>Задание 1.</b> Выберите все формулы кислот:<br><br>
+            ${currentVar.q1.map(f => `<button class="btn-opt" onclick="toggleQ1(this, '${f}')">${f}</button>`).join('')}
+        </div>
+        <div class="question"><b>Задание 2.</b> Выберите "лишнее" вещество:<br><br>
+            ${currentVar.q2.map(f => `<button class="btn-opt btn-q2" onclick="selectQ2(this, '${f}')">${f}</button>`).join('')}
+        </div>
+        <div class="question"><b>Задание 3.</b> Назовите кислоту ${currentVar.q3}:<br><input type="text" id="a3"></div>
+        <div class="question"><b>Задание 4.</b> Остаток и валентность для ${currentVar.q4} (через запятую):<br><input type="text" id="a4"></div>
+        <div class="question"><b>Задание 5.</b> w(H) в % в ${currentVar.q5} (до десятых):<br><input type="text" id="a5"></div>
     `;
 }
-render();
 
-    function finishInquisition() {
-    const name = document.getElementById('studentName').value;
-    const cls = document.getElementById('studentClass').value;
-    if(!name || !cls) { alert("Введите Имя и Класс!"); return; }
+function toggleQ1(btn, val) {
+    btn.classList.toggle('selected');
+    if (selectedQ1.includes(val)) selectedQ1 = selectedQ1.filter(i => i !== val);
+    else selectedQ1.push(val);
+}
 
-    const a1 = document.getElementById('a1').value.toLowerCase().trim();
-    const a2 = document.getElementById('a2').value.toLowerCase().trim();
-    const a3 = document.getElementById('a3').value.toLowerCase().trim();
-    const a4 = document.getElementById('a4').value.toLowerCase().trim();
-    const a5 = document.getElementById('a5').value.replace(',', '.').trim();
+function selectQ2(btn, val) {
+    document.querySelectorAll('.btn-q2').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedQ2 = val;
+}
 
+function finishInquisition() {
     let score = 0;
+    // Логика проверки
+    if (selectedQ1.sort().join(',') === currentVar.a1.sort().join(',')) score++;
+    if (selectedQ2 === currentVar.a2) score++;
+    if (document.getElementById('a3').value.toLowerCase().trim() === currentVar.a3) score++;
+    if (document.getElementById('a4').value.toLowerCase().trim().includes(currentVar.a4)) score++;
+    if (document.getElementById('a5').value.replace(',','.').trim() === currentVar.a5) score++;
 
-    // МАТРИЦА ИСТИНЫ (КЛЮЧИ L & ⅂)
-    const keys = {
-        1: { a1: "h2so4, hno3, h3po4", a2: "h2so4", a3: "угольная", a4: "so3, ii", a5: "2.0" },
-        2: { a1: "hcl, h2so3, hno2", a2: "hcl", a3: "азотная", a4: "po4, iii", a5: "1.6" },
-        3: { a1: "hi, h2s, hbr", a2: "hno3", a3: "сероводородная", a4: "cl, i", a5: "2.7" },
-        4: { a1: "hno3, h2co3, h3po4", a2: "h2so4", a3: "фосфорная", a4: "no3, i", a5: "3" },
-        5: { a1: "h2so4, hf, h2sio3", a2: "hcl", a3: "соляная", a4: "co3, ii", a5: "3.2" },
-        6: { a1: "hbr, h2so3, hno2", a2: "h3po4", a3: "серная", a4: "f, i", a5: "6" },
-        7: { a1: "h2s, h2co3, hno3", a2: "h2so4", a3: "азотистая", a4: "i, i", a5: "1" },
-        8: { a1: "hi, h3po4, h2so4", a2: "h2co3", a3: "йодоводородная", a4: "sio3, ii", a5: "1" },
-        9: { a1: "hf, hno2, h2s", a2: "hcl", a3: "фтороводородная", a4: "br, i", a5: "5" },
-        10: { a1: "h2sio3, hcl, h3po4", a2: "h2s", a3: "сернистая", a4: "no2, i", a5: "2.4" }
-    };
-
-    const k = keys[currentVar.id];
-
-    // ПРОВЕРКА (Алгоритм сравнения)
-    if (a1.includes(k.a1.split(', ')[0])) score++; // Упрощенная проверка для списка
-    if (a2.includes(k.a2)) score++;
-    if (a3 === k.a3) score++;
-    if (a4.includes(k.a4.split(', ')[0])) score++;
-    if (a5 === k.a5) score++;
-
-    // КРИТЕРИИ ГИМНАЗИИ
-    let grade = "2";
-    if (score === 5) grade = "5";
-    else if (score === 4) grade = "4";
-    else if (score === 3) grade = "3";
-
-    // ПАКЕТ ДЛЯ ТАБЛИЦЫ
-    const results = {
-        name, className: cls, variant: currentVar.id,
-        ans1: a1, ans2: a2, ans3: a3, ans4: a4, ans5: a5,
-        totalScore: score, grade: grade
-    };
-
+    const grade = score >= 5 ? "5" : score >= 4 ? "4" : score >= 3 ? "3" : "2";
+    
     fetch(GOOGLE_SCRIPT_URL, {
         method: "POST", mode: "no-cors",
-        body: JSON.stringify(results)
+        body: JSON.stringify({
+            name: document.getElementById('studentName').value,
+            className: document.getElementById('studentClass').value,
+            totalScore: score, grade: grade
+        })
     });
 
-    // ОФОРМЛЕНИЕ PDF
-    document.getElementById('printHeader').innerHTML = `
-        <div style="text-align:center; border:2px solid black; padding:10px;">
-            ГЕЙМ ОВЕР. РЕЗУЛЬТАТ: ${score} из 5 | ОЦЕНКА: ${grade}<br>
-            Ученик: ${name} | Класс: ${cls}
-        </div>`;
+    document.getElementById('ph').innerHTML = `Гимназия №1 | Результат: ${score}/5 | Оценка: ${grade}`;
     window.print();
 }
+render();
 </script>
 </body>
 </html>
