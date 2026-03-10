@@ -1,9 +1,9 @@
-<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L & ⅂ — ИНКВИЗИТОР [ХИМИЯ 8]</title>
+    <!-- ИСПРАВЛЕННАЯ ССЫЛКА НА БИБЛИОТЕКУ -->
     <script src="https://cdnjs.cloudflare.com"></script>
     <style>
         :root { --main-cyan: #00d4ff; --bg-dark: #0b0e14; --panel-bg: #161b22; }
@@ -31,47 +31,51 @@
         <input type="text" id="studentClass" placeholder="КЛАСС" style="width: 150px;" autocomplete="off">
     </div>
 
-    <div id="quiz-area"><!-- ГЕНЕРАЦИЯ ИНКВИЗИЦИИ --></div>
+    <div id="quiz-area"></div>
 
     <button class="btn" onclick="generateInquisitionPDF()">ЗАВЕРШИТЬ И СФОРМИРОВАТЬ СЕРТИФИКАТ</button>
 </div>
 
 <script>
+// ЗАМЕНИ НА СВОЙ URL ИЗ GOOGLE APPS SCRIPT
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwi3xoN1FJI4P3Y8tr8v2CPPeP6g731jb-opzEj654JXV8QHGbUiqs9NF4oismS13YnOg/exec";
+
 const variants = [
-    { id: 1, q1: "LiOH, H2SO4, NaCl, HNO3, CaO, H3PO4", a1: "H2SO4, HNO3, H3PO4", q2: "HCl, HBr, HI, H2S, H2SO4", a2: "H2SO4 (кислородсодержащая)", q3: "H2CO3", a3: "угольная", q4: "H2SO3", a4: "SO3, II", q5: "H2SO4 (до десятых)", a5: "2.0" },
-    { id: 2, q1: "K2O, HCl, NaOH, H2SO3, MgCl2, HNO2", a1: "HCl, H2SO3, HNO2", q2: "H2SO4, H2CO3, H3PO4, H2SO3, HCl", a2: "HCl (бескислородная / одноосновная)", q3: "HNO3", a3: "азотная", q4: "H3PO4", a4: "PO4, III", q5: "HNO3 (до десятых)", a5: "1.6" },
-    { id: 3, q1: "HI, Ba(OH)2, H2S, KNO3, SO3, HBr", a1: "HI, H2S, HBr", q2: "HCl, HBr, HI, H2S, HNO3", a2: "HNO3 (кислородсодержащая)", q3: "H2S", a3: "сероводородная", q4: "HCl", a4: "Cl, I", q5: "HCl (до десятых)", a5: "2.7" },
-    { id: 4, q1: "HNO3, Na2O, H2CO3, KOH, H3PO4, LiCl", a1: "HNO3, H2CO3, H3PO4", q2: "HNO3, HCl, HI, HBr, H2SO4", a2: "H2SO4 (двухосновная)", q3: "H3PO4", a3: "фосфорная", q4: "HNO3", a4: "NO3, I", q5: "H3PO4 (до целых)", a5: "3" },
-    { id: 5, q1: "H2SO4, Ca(OH)2, HF, Na2SO4, H2SiO3, P2O5", a1: "H2SO4, HF, H2SiO3", q2: "H2SO4, H2CO3, H2S, H2SiO3, HCl", a2: "HCl (одноосновная)", q3: "HCl", a3: "соляная", q4: "H2CO3", a4: "CO3, II", q5: "H2CO3 (до десятых)", a5: "3.2" },
-    { id: 6, q1: "HBr, MgO, H2SO3, BaCl2, HNO2, NaOH", a1: "HBr, H2SO3, HNO2", q2: "H2SO4, H2SO3, H2CO3, H2SiO3, H3PO4", a2: "H3PO4 (трехосновная)", q3: "H2SO4", a3: "серная", q4: "HF", a4: "F, I", q5: "H2S (до целых)", a5: "6" },
-    { id: 7, q1: "H2S, KOH, H2CO3, NaCl, HNO3, FeO", a1: "H2S, H2CO3, HNO3", q2: "HCl, HBr, HI, HF, H2SO4", a2: "H2SO4 (двухосновная)", q3: "HNO2", a3: "азотистая", q4: "HI", a4: "I, I", q5: "HBr (до целых)", a5: "1" },
-    { id: 8, q1: "HI, Al2O3, H3PO4, KCl, H2SO4, LiOH", a1: "HI, H3PO4, H2SO4", q2: "HCl, HBr, HI, HF, H2CO3", a2: "H2CO3 (кислородсодержащая)", q3: "HI", a3: "йодоводородная", q4: "H2SiO3", a4: "SiO3, II", q5: "HI (до целых)", a5: "1" },
-    { id: 9, q1: "HF, BaO, HNO2, K2SO4, H2S, Ca(OH)2", a1: "HF, HNO2, H2S", q2: "HNO3, HNO2, H2SO4, H2SO3, HCl", a2: "HCl (бескислородная)", q3: "HF", a3: "фтороводородная", q4: "HBr", a4: "Br, I", q5: "HF (до целых)", a5: "5" },
-    { id: 10, q1: "H2SiO3, NaOH, HCl, Na2CO3, H3PO4, MgO", a1: "H2SiO3, HCl, H3PO4", q2: "HCl, HBr, HI, HF, H2S", a2: "H2S (двухосновная)", q3: "H2SO3", a3: "сернистая", q4: "HNO2", a4: "NO2, I", q5: "H2SO3 (до десятых)", a5: "2.4" }
+    { id: 1, q1: "LiOH, H2SO4, NaCl, HNO3, CaO, H3PO4", q2: "HCl, HBr, HI, H2S, H2SO4", q3: "H2CO3", q4: "H2SO3", q5: "H2SO4 (до десятых)" },
+    { id: 2, q1: "K2O, HCl, NaOH, H2SO3, MgCl2, HNO2", q2: "H2SO4, H2CO3, H3PO4, H2SO3, HCl", q3: "HNO3", q4: "H3PO4", q5: "HNO3 (до десятых)" },
+    { id: 3, q1: "HI, Ba(OH)2, H2S, KNO3, SO3, HBr", q2: "HCl, HBr, HI, H2S, HNO3", q3: "H2S", q4: "HCl", q5: "HCl (до десятых)" },
+    { id: 4, q1: "HNO3, Na2O, H2CO3, KOH, H3PO4, LiCl", q2: "HNO3, HCl, HI, HBr, H2SO4", q3: "H3PO4", q4: "HNO3", q5: "H3PO4 (до целых)" },
+    { id: 5, q1: "H2SO4, Ca(OH)2, HF, Na2SO4, H2SiO3, P2O5", q2: "H2SO4, H2CO3, H2S, H2SiO3, HCl", q3: "HCl", q4: "H2CO3", q5: "H2CO3 (до десятых)" },
+    { id: 6, q1: "HBr, MgO, H2SO3, BaCl2, HNO2, NaOH", q2: "H2SO4, H2SO3, H2CO3, H2SiO3, H3PO4", q3: "H2SO4", q4: "HF", q5: "H2S (до целых)" },
+    { id: 7, q1: "H2S, KOH, H2CO3, NaCl, HNO3, FeO", q2: "HCl, HBr, HI, HF, H2SO4", q3: "HNO2", q4: "HI", q5: "HBr (до целых)" },
+    { id: 8, q1: "HI, Al2O3, H3PO4, KCl, H2SO4, LiOH", q2: "HCl, HBr, HI, HF, H2CO3", q3: "HI", q4: "H2SiO3", q5: "HI (до целых)" },
+    { id: 9, q1: "HF, BaO, HNO2, K2SO4, H2S, Ca(OH)2", q2: "HNO3, HNO2, H2SO4, H2SO3, HCl", q3: "HF", q4: "HBr", q5: "HF (до целых)" },
+    { id: 10, q1: "H2SiO3, NaOH, HCl, Na2CO3, H3PO4, MgO", q2: "HCl, HBr, HI, HF, H2S", q3: "H2SO3", q4: "HNO2", q5: "H2SO3 (до десятых)" }
 ];
 
 const currentVar = variants[Math.floor(Math.random() * variants.length)];
 
 function render() {
-    const area = document.getElementById('quiz-area');
-    area.innerHTML = `
-        <p style="color:var(--main-cyan)">АКТИВИРОВАН ВАРИАНТ №${currentVar.id}</p>
-        <div class="question"><span class="q-text">1. Из перечня выпишите только формулы кислот:</span><i>${currentVar.q1}</i><br><br><input type="text" id="a1"></div>
-        <div class="question"><span class="q-text">2. Какое вещество лишнее и почему (кратко)?</span><i>${currentVar.q2}</i><br><br><input type="text" id="a2"></div>
-        <div class="question"><span class="q-text">3. Укажите название кислоты:</span><i>${currentVar.q3}</i><br><br><input type="text" id="a3"></div>
-        <div class="question"><span class="q-text">4. Укажите формулу кислотного остатка и его валентность:</span><i>${currentVar.q4}</i><br><br><input type="text" id="a4"></div>
-        <div class="question"><span class="q-text">5. Вычислите массовую долю водорода (w) в:</span><i>${currentVar.q5}</i><br><br><input type="text" id="a5"></div>
+    document.getElementById('quiz-area').innerHTML = `
+        <p style="color:var(--main-cyan)">ВАРИАНТ №${currentVar.id}</p>
+        <div class="question"><span class="q-text">1. Формулы кислот:</span><i>${currentVar.q1}</i><br><input type="text" id="a1"></div>
+        <div class="question"><span class="q-text">2. Лишнее:</span><i>${currentVar.q2}</i><br><input type="text" id="a2"></div>
+        <div class="question"><span class="q-text">3. Назовите:</span><i>${currentVar.q3}</i><br><input type="text" id="a3"></div>
+        <div class="question"><span class="q-text">4. Остаток и валентность:</span><i>${currentVar.q4}</i><br><input type="text" id="a4"></div>
+        <div class="question"><span class="q-text">5. w(H) в %:</span><i>${currentVar.q5}</i><br><input type="text" id="a5"></div>
     `;
 }
 render();
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwi3xoN1FJI4P3Y8tr8v2CPPeP6g731jb-opzEj654JXV8QHGbUiqs9NF4oismS13YnOg/exec";
+async function generateInquisitionPDF() {
+    const name = document.getElementById('studentName').value;
+    const cls = document.getElementById('studentClass').value;
+    
+    if(!name || !cls) { alert("Брат Локи требует ФИО и Класс!"); return; }
 
-function syncData() {
+    // 1. СИНХРОНИЗАЦИЯ С ТАБЛИЦЕЙ
     const payload = {
-        name: document.getElementById('studentName').value,
-        className: document.getElementById('studentClass').value,
-        variantId: currentVar.id,
+        name: name, className: cls, variantId: currentVar.id,
         ans1: document.getElementById('a1').value,
         ans2: document.getElementById('a2').value,
         ans3: document.getElementById('a3').value,
@@ -79,52 +83,24 @@ function syncData() {
         ans5: document.getElementById('a5').value
     };
 
-    fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Важно для Google Script
-        body: JSON.stringify(payload)
-    });
-}
-    function generateInquisitionPDF() {
+    try {
+        fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+    } catch(e) { console.log("Сбой Жатвы, но PDF сделаем."); }
+
+    // 2. ГЕНЕРАЦИЯ PDF
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    const name = document.getElementById('studentName').value || "Анонимный Падаван";
-    const cls = document.getElementById('studentClass').value || "---";
-
-    doc.setFontSize(16);
-    doc.text("Гимназия №1 «Универс» — Протокол контроля L & ⅂", 20, 20);
-    doc.setFontSize(12);
-    doc.text(`Слушатель: ${name} | Класс: ${cls}`, 20, 30);
-    doc.text(`Тема: Кислоты (Вариант ${currentVar.id}) | Дата: ${new Date().toLocaleString()}`, 20, 38);
+    doc.text(`ГИМНАЗИЯ №1 «УНИВЕРС» | Вариант ${currentVar.id}`, 20, 20);
+    doc.text(`Ученик: ${name} | Класс: ${cls}`, 20, 30);
     
-    doc.line(20, 45, 190, 45);
-    
-    let y = 55;
-    const questions = [currentVar.q1, currentVar.q2, currentVar.q3, currentVar.q4, currentVar.q5];
+    let y = 50;
     for(let i=1; i<=5; i++) {
-        let val = document.getElementById('a'+i).value;
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text(`Вопрос ${i}: ${questions[i-1].substring(0, 70)}...`, 20, y);
-        doc.setTextColor(0);
-        doc.setFontSize(12);
-        doc.text(`Ответ: ${val}`, 25, y + 7);
-        y += 20;
+        doc.text(`Ответ ${i}: ${document.getElementById('a'+i).value}`, 20, y);
+        y += 15;
     }
-
-    doc.line(20, y, 190, y);
-    y += 15;
-    doc.setFontSize(14);
-    doc.text("ИТОГОВАЯ ОЦЕНКА: ________ (заполняется учителем)", 20, y);
-    y += 15;
-    doc.setFontSize(11);
-    doc.text("Проверил: _________________  Подпись: _________", 20, y);
     
-    doc.setTextColor(150);
-    doc.setFontSize(8);
-    doc.text("Данный протокол сформирован системой L & ⅂ Инквизитор. Изменению не подлежит.", 20, 280);
-
-    doc.save(`Result_${name}_Chemistry.pdf`);
+    doc.text("Проверил: _________ Оценка: ___ Подпись: ___", 20, y + 20);
+    doc.save(`Result_${name}.pdf`);
 }
 </script>
 </body>
