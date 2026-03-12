@@ -90,8 +90,12 @@ function selectQ2(btn, val) {
 }
 
 function finishInquisition() {
+    const name = document.getElementById('studentName').value;
+    const cls = document.getElementById('studentClass').value;
+    if(!name || !cls) { alert("Представьтесь, Мастер!"); return; }
+
     let score = 0;
-    // Логика проверки
+    // 1. ЛОГИКА ПРОВЕРКИ (ТВОЙ ЗОЛОТОЙ СТАНДАРТ)
     if (selectedQ1.sort().join(',') === currentVar.a1.sort().join(',')) score++;
     if (selectedQ2 === currentVar.a2) score++;
     if (document.getElementById('a3').value.toLowerCase().trim() === currentVar.a3) score++;
@@ -100,17 +104,31 @@ function finishInquisition() {
 
     const grade = score >= 5 ? "5" : score >= 4 ? "4" : score >= 3 ? "3" : "2";
     
+    // 2. ЖАТВА (ОТПРАВКА В ТАБЛИЦУ)
     fetch(GOOGLE_SCRIPT_URL, {
         method: "POST", mode: "no-cors",
         body: JSON.stringify({
-            name: document.getElementById('studentName').value,
-            className: document.getElementById('studentClass').value,
-            totalScore: score, grade: grade
+            name: name,
+            className: cls,
+            totalScore: score, 
+            grade: grade
         })
     });
 
-    document.getElementById('ph').innerHTML = `Гимназия №1 | Результат: ${score}/5 | Оценка: ${grade}`;
-    window.print();
+    // 3. ПОДГОТОВКА К ПЕЧАТИ (ОБНОВЛЕНИЕ ЗАГОЛОВКА)
+    const header = document.getElementById('ph');
+    header.style.display = "block";
+    header.innerHTML = `
+        <div style="color:black; text-align:center; padding:15px; border:2px solid black; margin-bottom:20px;">
+            <h2 style="margin:0;">Гимназия №1 «Универс»</h2>
+            <p style="margin:5px 0;"><b>РЕЗУЛЬТАТ: ${score} из 5 | ОЦЕНКА: ${grade}</b></p>
+            <p style="margin:0;">Ученик: ${name} | Класс: ${cls} | Дата: ${new Date().toLocaleDateString()}</p>
+        </div>`;
+
+    // 4. ТЕХНИЧЕСКАЯ ПАУЗА (ДЛЯ СТАБИЛЬНОСТИ НА СМАРТФОНАХ)
+    setTimeout(() => {
+        window.print();
+    }, 500); 
 }
 render();
 </script>
