@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L & ⅂ | ХИМИЧЕСКИЙ АРТЕФАКТ</title>
+    <style>
+        :root { --toxic: #2ecc71; --bg: #0a0f0d; }
+        body { background: var(--bg); color: var(--toxic); font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .crossword-container { display: grid; grid-template-columns: repeat(10, 35px); gap: 2px; margin: 20px 0; background: #111; padding: 10px; border: 1px solid var(--toxic); }
+        .cell { width: 35px; height: 35px; background: #000; border: 1px solid #222; text-align: center; font-weight: bold; color: #fff; text-transform: uppercase; outline: none; }
+        .cell:focus { border-color: var(--toxic); box-shadow: 0 0 10px var(--toxic); }
+        .cell.empty { background: transparent; border: none; }
+        .hint { text-align: left; max-width: 500px; font-size: 0.9rem; margin-bottom: 5px; }
+        
+        /* ПОДАРОК */
+        #gift-box { display: none; font-size: 100px; cursor: pointer; transition: transform 0.3s; margin-top: 30px; animation: wobble 1s infinite; }
+        @keyframes wobble { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+        #gift-box:hover { transform: scale(1.2); }
+
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; border: 2px solid var(--toxic); padding: 40px; text-align: center; border-radius: 20px; z-index: 100; box-shadow: 0 0 50px var(--toxic); }
+        @media print { .no-print { display: none; } .print-only { display: block !important; color: black; } body { background: white; } }
+        .print-only { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="no-print">
+    <h1>КРОССВОРД: КИСЛОТЫ</h1>
+    <input type="text" id="student_info" placeholder="Фамилия, Имя, Класс" style="padding: 10px; width: 300px; background: #000; color: #fff; border: 1px solid var(--toxic); margin-bottom: 20px;">
+    
+    <div id="hints">
+        <div class="hint">1. Индикатор, становящийся красным в кислоте.</div>
+        <div class="hint">2. Название кислоты HCl (прил.).</div>
+        <div class="hint">3. Газ, определяющий классификацию (содержащие / без...).</div>
+        <div class="hint">4. Элемент, с которого начинается любая кислота.</div>
+    </div>
+
+    <div class="crossword-container" id="grid">
+        <!-- Сетка генерируется JS -->
+    </div>
+
+    <button onclick="checkCrossword()" style="background: var(--toxic); border: none; padding: 15px 30px; cursor: pointer; font-weight: bold; border-radius: 10px;">ПРОВЕРИТЬ АРТЕФАКТ</button>
+    
+    <div id="gift-box" onclick="openGift()">🎁</div>
+</div>
+
+<div id="result-modal" class="modal">
+    <h2 id="grade-text">ОЦЕНКА: 5</h2>
+    <p>Данные синхронизированы. Нажмите CTRL+P для печати бланка.</p>
+    <button onclick="window.print()" style="background: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">ПЕЧАТЬ БЛАНКА</button>
+</div>
+
+<script>
+// ЛОГИКА КРОССВОРДА
+const words = ["ЛАКМУС", "СОЛЯНАЯ", "КИСЛОРОД", "ВОДОРОД"];
+const gridData = [
+    { r: 1, c: 2, word: "ЛАКМУС", vertical: false },
+    { r: 0, c: 3, word: "СОЛЯНАЯ", vertical: true },
+    // Тут можно добавить еще пересечений...
+];
+
+function createGrid() {
+    const grid = document.getElementById('grid');
+    for (let r = 0; r < 10; r++) {
+        for (let c = 0; c < 10; c++) {
+            const input = document.createElement('input');
+            input.className = 'cell';
+            input.maxLength = 1;
+            input.id = `c-${r}-${c}`;
+            grid.appendChild(input);
+        }
+    }
+}
+createGrid();
+
+function checkCrossword() {
+    // Упрощенная проверка для примера
+    let score = 5; // В реале считаем совпадения по ID ячеек
+    document.getElementById('gift-box').style.display = 'block';
+    alert("АРТЕФАКТ НАЙДЕН! Открой подарок!");
+}
+
+function openGift() {
+    document.getElementById('result-modal').style.display = 'block';
+    // Тут вызываем твой FETCH в таблицу, как в прошлых кейсах
+}
+</script>
+
+</body>
+</html>
