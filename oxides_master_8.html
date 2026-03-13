@@ -111,35 +111,60 @@
         </div>
     </div>
 
-    <button class="btn" onclick="finishOxides()">ЗАВЕРШИТЬ ЖАТВУ</button>
+    <button class="btn" id="finishBtn" onclick="finishOxides()">ПЕРЕЙТИ К РЕЗУЛЬТАТАМ</button>
 </div>
 
 <script>
-    const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbzqpQC1uTdfTrptVb4Quyuw9ll1jlC9IUY7QLXI9HYSeAlA-r2gO8kP8VpoC2B5IsKBXg/exec";
+    // ВСТАВЬ СВОЙ НОВЫЙ URL ДЛЯ 8 КЛАССА ЗДЕСЬ
+    const GOOGLE_URL = "URL_ТВОЕЙ_НОВОЙ_ТАБЛИЦЫ_ДЛЯ_8_КЛАССА";
 
     function finishOxides() {
-        const info = document.getElementById('student_info').value;
-        if(!info) { alert("Представьтесь, Мастер!"); return; }
+        const info = document.getElementById('student_info').value.trim();
+        if(!info) { 
+            alert("Пожалуйста, введите Фамилию, Имя и Класс!"); 
+            return; 
+        }
+
+        // Блокируем кнопку, чтобы не нажимали дважды
+        const btn = document.getElementById('finishBtn');
+        btn.disabled = true;
+        btn.innerText = "СИНХРОНИЗАЦИЯ...";
 
         let score = 0;
+        // Проверка всех 10 заданий
         for(let i=1; i<=10; i++) {
-            let val = document.getElementById('a'+i).value;
-            if(i === 4) { // Проверка массы Al2O3
-                if(document.getElementById('a4').value.trim() === "102") score++;
+            if(i === 4) { 
+                // Специальная проверка для молярной массы Al2O3
+                const ans4 = document.getElementById('a4').value.trim();
+                if(ans4 === "102") score++;
             } else {
+                const val = document.getElementById('a'+i).value;
                 if(val === "1") score++;
             }
         }
 
         const grade = score >= 9 ? "5" : score >= 7 ? "4" : score >= 5 ? "3" : "2";
 
+        // ОТПРАВКА В ТАБЛИЦУ (ЖАТВА-8)
         fetch(GOOGLE_URL, {
-            method: "POST", mode: "no-cors",
-            body: JSON.stringify({ name: info, score: score, grade: grade, subject: "Оксиды 8 класс" })
+            method: "POST", 
+            mode: "no-cors",
+            body: JSON.stringify({ 
+                name: info, 
+                score: score, 
+                grade: grade, 
+                subject: "Оксиды 8 класс" 
+            })
+        }).then(() => {
+            console.log("Данные успешно переданы.");
         });
 
-        alert(`ЖАТВА ОКОНЧЕНА. Твой балл: ${score} из 10. Оценка: ${grade}`);
-        window.print(); // Создаем бумажный протокол
+        // ФИНАЛЬНЫЙ ЭКРАН
+        setTimeout(() => {
+            alert(`ТЕСТ ЗАВЕРШЕН.\nВаш результат: ${score} из 10.\nВаша оценка: ${grade}`);
+            window.print(); // Открываем окно печати бланка
+            btn.innerText = "РЕЗУЛЬТАТЫ СОХРАНЕНЫ";
+        }, 500);
     }
 </script>
 </body>
