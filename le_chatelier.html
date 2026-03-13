@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L & ⅂ | Лаборатория Ле Шателье</title>
+    <style>
+        :root { --emerald: #2ecc71; --dark: #0a0f0d; --glow: rgba(46, 204, 113, 0.3); --red: #e74c3c; }
+        body { background: var(--dark); color: var(--emerald); font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; min-height: 100vh; justify-content: center; }
+        .lab-card { background: #111; border: 2px solid var(--emerald); padding: 30px; border-radius: 15px; box-shadow: 0 0 30px var(--glow); max-width: 600px; width: 90%; text-align: center; position: relative; }
+        .user-block { margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        input { background: #000; border: 1px solid var(--emerald); color: #fff; padding: 10px; width: 80%; text-align: center; border-radius: 5px; outline: none; }
+        .formula { font-size: 1.5rem; margin: 25px 0; color: #fff; text-shadow: 0 0 10px var(--emerald); background: #000; padding: 15px; border-radius: 10px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .lever { background: transparent; border: 1px solid var(--emerald); color: var(--emerald); padding: 12px; cursor: pointer; font-weight: bold; transition: 0.2s; text-transform: uppercase; font-size: 0.8rem; }
+        .lever:hover { background: var(--emerald); color: #000; box-shadow: 0 0 15px var(--emerald); }
+        .hint-btn { margin-top: 20px; color: #f1c40f; cursor: pointer; font-size: 0.9rem; text-decoration: underline; }
+        #status { margin-top: 15px; font-weight: bold; height: 20px; }
+        .progress { font-size: 0.8rem; opacity: 0.7; margin-bottom: 10px; }
+        sub { font-size: 0.6em; }
+        @keyframes flashRed { 0% { background: var(--red); } 100% { background: var(--dark); } }
+        .error-flash { animation: flashRed 0.3s ease-in-out; }
+    </style>
+</head>
+<body>
+
+<div class="lab-card" id="mainCard">
+    <div class="progress" id="progressText">ОБЪЕКТ: 1 / 5</div>
+    <h1>ЛАБОРАТОРИЯ ЛЕ ШАТЕЛЬЕ</h1>
+    
+    <div class="user-block" id="userInputs">
+        <input type="text" id="student_name" placeholder="ФАМИЛИЯ ИМЯ КЛАСС">
+    </div>
+
+    <div style="font-size: 0.9rem;">ЦЕЛЬ: Сместите равновесие ВПРАВО (→)</div>
+    <div class="formula" id="equation">Загрузка реактора...</div>
+
+    <div class="controls">
+        <button class="lever" onclick="process('temp_up')">🔥 Нагрев</button>
+        <button class="lever" onclick="process('temp_down')">❄️ Охлаждение</button>
+        <button class="lever" onclick="process('press_up')">⬆️ Давление (P)</button>
+        <button class="lever" onclick="process('press_down')">⬇️ Разрежение (P)</button>
+    </div>
+
+    <div id="status"></div>
+    <div class="hint-btn" onclick="getFlamelHint()">📜 Свиток Николаса Фламеля</div>
+</div>
+
+<script>
+    const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbxls_K669dKRWcwYiTqC5qwsetaZ81zD9Uv5ibyceRSp48EoyyIYMA7iPfPT48qmCDn/exec";
+    
+    const tasks = [
+        { eq: "N<sub>2(г)</sub> + 3H<sub>2(г)</sub> ⇄ 2NH<sub>3(г)</sub> + Q", right: ["temp_down", "press_up"], hint: "Система выделяет тепло. Хочешь больше продукта — не давай ей греться!" },
+        { eq: "2SO<sub>2(г)</sub> + O<sub>2(г)</sub> ⇄ 2SO<sub>3(г)</sub> + Q", right: ["temp_down", "press_up"], hint: "Считай молекулы газа слева и справа. Где их больше, там тесно!" },
+        { eq: "H<sub>2(г)</sub> + I<sub>2(г)</sub> ⇄ 2HI<sub>(г)</sub> - Q", right: ["temp_up"], hint: "Реакция идет с поглощением тепла. Разожги огонь алхимии!" },
+        { eq: "CO<sub>2(г)</sub> + C<sub>(тв)</sub> ⇄ 2CO<sub>(г)</sub> - Q", right: ["temp_up", "press_down"], hint: "Твердое не давит, только газ имеет значение!" },
+        { eq: "N<sub>2</sub>O<sub>4(г)</sub> ⇄ 2NO<sub>2(г)</sub> - Q", right: ["temp_up", "press_down"], hint: "Один превращается в два. Ему нужно пространство!" }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let canClick = true;
+
+    function init() {
+        document.getElementById('equation').innerHTML = tasks[current].eq;
+    }
+    init();
+
+    function process(action) {
+        if(!canClick) return;
+        const name = document.getElementById('student_name').value;
+        if(!name) { alert("Представьтесь начальнику лаборатории!"); return; }
+
+        if(tasks[current].right.includes(action)) {
+            score++;
+            document.getElementById('status').innerText = "✅ РЕАКЦИЯ СМЕЩАЕТСЯ!";
+            document.getElementById('status').style.color = "#2ecc71";
+        } else {
+            document.getElementById('status').innerText = "❌ РЕАКЦИЯ ИДЕТ ВСПЯТЬ!";
+            document.getElementById('status').style.color = "#e74c3c";
+            document.body.classList.add('error-flash');
+            setTimeout(() => document.body.classList.remove('error-flash'), 300);
+        }
+
+        canClick = false;
+        setTimeout(nextTask, 1500);
+    }
+
+    function nextTask() {
+        current++;
+        if(current < tasks.length) {
+            document.getElementById('progressText').innerText = `ОБЪЕКТ: ${current + 1} / 5`;
+            document.getElementById('equation').innerHTML = tasks[current].eq;
+            document.getElementById('status').innerText = "";
+            canClick = true;
+        } else {
+            finishLab();
+        }
+    }
+
+    function getFlamelHint() {
+        alert("Фламель шепчет: " + tasks[current].hint);
+    }
+
+    function finishLab() {
+        const name = document.getElementById('student_name').value;
+        const grade = score === 5 ? "5" : score === 4 ? "4" : score === 3 ? "3" : "2";
+        
+        document.getElementById('mainCard').innerHTML = `
+            <h1>РЕАКЦИИ ЗАВЕРШЕНЫ</h1>
+            <p>Твой результат: ${score} из 5</p>
+            <h2 style="color:#f1c40f">ОЦЕНКА: ${grade}</h2>
+            <p style="font-size:0.8rem">Данные переданы в Гимназию №1.</p>
+        `;
+
+        fetch(GOOGLE_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify({ name: name, score: score, grade: grade, subject: "Ле Шателье 11кл" })
+        });
+    }
+</script>
+</body>
+</html>
