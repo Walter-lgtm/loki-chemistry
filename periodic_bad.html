@@ -6,69 +6,19 @@
     <title>L & ⅂ | HEISENBERG TABLE</title>
     <style>
         :root { --br-green: #1f4722; --neon-green: #2ecc71; --bg-black: #0a0f0d; }
-        body { background: var(--bg-black); color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 20px; overflow-x: hidden; }
-        
+        body { background: var(--bg-black); color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 20px; }
         .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--neon-green); padding-bottom: 10px; }
-        .header h1 { font-size: 2.5rem; letter-spacing: 5px; color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); margin: 0; }
-
+        .header h1 { font-size: 2rem; letter-spacing: 5px; color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); margin: 0; }
         .main-layout { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-
-        /* СЕТКА ТАБЛИЦЫ: 18 ГРУПП */
-        .periodic-table { 
-            display: grid; 
-            grid-template-columns: repeat(18, 55px); 
-            grid-auto-rows: 65px; /* Ряды будут добавляться сами */
-            gap: 5px; 
-            background: rgba(31, 71, 34, 0.05);
-            padding: 10px;
-            border: 1px solid #1a1a1a;
-            overflow-x: auto; /* Чтобы на мобилках можно было листать вбок */
-        }
-
-        .element { 
-            background: rgba(0, 0, 0, 0.8); 
-            border: 1px solid var(--br-green); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .element:hover { 
-            background: var(--br-green); 
-            box-shadow: 0 0 15px var(--neon-green); 
-            z-index: 10; 
-            transform: scale(1.1);
-        }
-
+        .periodic-table { display: grid; grid-template-columns: repeat(18, 50px); grid-auto-rows: 60px; gap: 5px; background: rgba(31, 71, 34, 0.05); padding: 10px; border: 1px solid #1a1a1a; overflow-x: auto; }
+        .element { background: rgba(0, 0, 0, 0.8); border: 1px solid var(--br-green); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; position: relative; width: 50px; height: 60px; }
+        .element:hover { background: var(--br-green); box-shadow: 0 0 15px var(--neon-green); z-index: 10; transform: scale(1.1); }
         .element .num { font-size: 0.6rem; position: absolute; top: 3px; left: 5px; color: var(--neon-green); }
-        .element .sym { font-size: 1.4rem; font-weight: bold; color: #fff; }
-        .element .name { font-size: 0.5rem; text-transform: uppercase; opacity: 0.7; }
-
-        /* ИНФО-ПАНЕЛЬ */
-        .info-panel { 
-            width: 300px; 
-            background: #111; 
-            border: 2px solid var(--neon-green); 
-            padding: 20px; 
-            border-radius: 10px; 
-            box-shadow: 0 0 30px rgba(46, 204, 113, 0.2);
-            min-height: 300px;
-        }
-
-        .info-panel h2 { color: var(--neon-green); border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .data-row { margin: 15px 0; font-size: 0.9rem; }
+        .element .sym { font-size: 1.2rem; font-weight: bold; color: #fff; }
+        .element .name { font-size: 0.4rem; text-transform: uppercase; opacity: 0.7; text-align: center; }
+        .info-panel { width: 300px; background: #111; border: 2px solid var(--neon-green); padding: 20px; border-radius: 10px; box-shadow: 0 0 30px rgba(46, 204, 113, 0.2); min-height: 300px; }
         .data-label { color: var(--neon-green); font-weight: bold; }
-
-        /* ПОЗИЦИОНИРОВАНИЕ (Пример для первых элементов) */
-        .h { grid-column: 1; grid-row: 1; }
-        .he { grid-column: 18; grid-row: 1; }
-        .li { grid-column: 1; grid-row: 2; }
-        .be { grid-column: 2; grid-row: 2; }
-        /* ... и так далее для всех 118 ... */
+        .data-row { margin: 10px 0; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -78,23 +28,17 @@
 </div>
 
 <div class="main-layout">
-    <div class="periodic-table" id="table">
-        <!-- ГЕНЕРАЦИЯ ЭЛЕМЕНТОВ JS -->
-    </div>
-
+    <div class="periodic-table" id="table"></div>
     <div class="info-panel" id="info">
         <h2>ДАННЫЕ ОБЪЕКТА</h2>
-        <div id="details">Выберите элемент для анализа...</div>
+        <div id="details">Выберите элемент...</div>
     </div>
 </div>
 
 <script>
-    // БАЗА ДАННЫХ L & ⅂ (С ЛАТЫНЬЮ И КООРДИНАТАМИ)
     const elements = [
-        // ПЕРИОД 1
         { n: 1, s: "H", name: "Водород", lat: "Hydrogenium", m: 1.008, v: "I", c: "1s¹", x: 1, y: 1 },
         { n: 2, s: "He", name: "Гелий", lat: "Helium", m: 4.002, v: "0", c: "1s²", x: 18, y: 1 },
-        // ПЕРИОД 2
         { n: 3, s: "Li", name: "Литий", lat: "Lithium", m: 6.94, v: "I", c: "[He] 2s¹", x: 1, y: 2 },
         { n: 4, s: "Be", name: "Бериллий", lat: "Beryllium", m: 9.012, v: "II", c: "[He] 2s²", x: 2, y: 2 },
         { n: 5, s: "B", name: "Бор", lat: "Borum", m: 10.81, v: "III", c: "[He] 2s² 2p¹", x: 13, y: 2 },
@@ -103,7 +47,6 @@
         { n: 8, s: "O", name: "Кислород", lat: "Oxygenium", m: 15.999, v: "II", c: "[He] 2s² 2p⁴", x: 16, y: 2 },
         { n: 9, s: "F", name: "Фтор", lat: "Fluorum", m: 18.998, v: "I", c: "[He] 2s² 2p⁵", x: 17, y: 2 },
         { n: 10, s: "Ne", name: "Неон", lat: "Neon", m: 20.180, v: "0", c: "[He] 2s² 2p⁶", x: 18, y: 2 },
-        // ПЕРИОД 3
         { n: 11, s: "Na", name: "Натрий", lat: "Natrium", m: 22.990, v: "I", c: "[Ne] 3s¹", x: 1, y: 3 },
         { n: 12, s: "Mg", name: "Магний", lat: "Magnesium", m: 24.305, v: "II", c: "[Ne] 3s²", x: 2, y: 3 },
         { n: 13, s: "Al", name: "Алюминий", lat: "Aluminium", m: 26.982, v: "III", c: "[Ne] 3s² 3p¹", x: 13, y: 3 },
@@ -111,8 +54,7 @@
         { n: 15, s: "P", name: "Фосфор", lat: "Phosphorus", m: 30.974, v: "V", c: "[Ne] 3s² 3p³", x: 15, y: 3 },
         { n: 16, s: "S", name: "Сера", lat: "Sulfur", m: 32.06, v: "VI", c: "[Ne] 3s² 3p⁴", x: 16, y: 3 },
         { n: 17, s: "Cl", name: "Хлор", lat: "Chlorum", m: 35.45, v: "VII", c: "[Ne] 3s² 3p⁵", x: 17, y: 3 },
-        { n: 18, s: "Ar", name: "Аргон", lat: "Argon", m: 39.948, v: "0", c: "[Ne] 3s² 3p⁶", x: 18, y: 3 }
-        // ПЕРИОД 4
+        { n: 18, s: "Ar", name: "Аргон", lat: "Argon", m: 39.948, v: "0", c: "[Ne] 3s² 3p⁶", x: 18, y: 3 },
         { n: 19, s: "K", name: "Калий", lat: "Kalium", m: 39.098, v: "I", c: "[Ar] 4s¹", x: 1, y: 4 },
         { n: 20, s: "Ca", name: "Кальций", lat: "Calcium", m: 40.078, v: "II", c: "[Ar] 4s²", x: 2, y: 4 },
         { n: 21, s: "Sc", name: "Скандий", lat: "Scandium", m: 44.956, v: "III", c: "[Ar] 3d¹ 4s²", x: 3, y: 4 },
@@ -131,22 +73,21 @@
         { n: 34, s: "Se", name: "Селен", lat: "Selenium", m: 78.971, v: "II, IV, VI", c: "[Ar] 3d¹⁰ 4s² 4p⁴", x: 16, y: 4 },
         { n: 35, s: "Br", name: "Бром", lat: "Bromum", m: 79.904, v: "I, V, VII", c: "[Ar] 3d¹⁰ 4s² 4p⁵", x: 17, y: 4 },
         { n: 36, s: "Kr", name: "Криптон", lat: "Krypton", m: 83.798, v: "0", c: "[Ar] 3d¹⁰ 4s² 4p⁶", x: 18, y: 4 }
-    ]; // ВОТ ЭТА СКОБКА БЫЛА ПОТЕРЯНА!
+    ];
 
     function buildTable() {
         const table = document.getElementById('table');
-        table.innerHTML = ""; 
         elements.forEach(el => {
             const div = document.createElement('div');
             div.className = 'element';
             div.style.gridColumn = el.x;
             div.style.gridRow = el.y;
-            div.innerHTML = `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="name" style="font-size:0.4rem">${el.name}</span>`;
+            div.innerHTML = `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="name">${el.name}</span>`;
             div.onclick = () => {
                 document.getElementById('details').innerHTML = `
                     <div class="data-row"><span class="data-label">СИМВОЛ:</span> ${el.s}</div>
                     <div class="data-row"><span class="data-label">NAME:</span> ${el.name}</div>
-                    <div class="data-row"><span class="data-label">LATIN:</span> <i style="color:#fff">${el.lat}</i></div>
+                    <div class="data-row"><span class="data-label">LATIN:</span> <i>${el.lat}</i></div>
                     <div class="data-row"><span class="data-label">МАССА:</span> ${el.m}</div>
                     <div class="data-row"><span class="data-label">ВАЛЕНТНОСТЬ:</span> ${el.v}</div>
                     <div class="data-row"><span class="data-label">КОНФИГУРАЦИЯ:</span><br>${el.c}</div>
@@ -157,6 +98,5 @@
     }
     buildTable();
 </script>
-
 </body>
 </html>
