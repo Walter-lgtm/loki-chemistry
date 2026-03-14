@@ -89,43 +89,45 @@
 </div>
 
 <script>
-    // БАЗА ДАННЫХ L & ⅂ (РУЧНАЯ СБОРКА)
+    // БАЗА ДАННЫХ L & ⅂ (С ЛАТЫНЬЮ И КООРДИНАТАМИ)
     const elements = [
         // ПЕРИОД 1
-        { n: 1, s: "H", name: "Hydrogen", m: 1.008, v: "I", c: "1s¹", x: 1, y: 1 },
-        { n: 2, s: "He", name: "Helium", m: 4.002, v: "0", c: "1s²", x: 18, y: 1 },
+        { n: 1, s: "H", name: "Водород", lat: "Hydrogenium", m: 1.008, v: "I", c: "1s¹", x: 1, y: 1 },
+        { n: 2, s: "He", name: "Гелий", lat: "Helium", m: 4.002, v: "0", c: "1s²", x: 18, y: 1 },
         // ПЕРИОД 2
-        { n: 3, s: "Li", name: "Lithium", m: 6.94, v: "I", c: "[He] 2s¹", x: 1, y: 2 },
-        { n: 4, s: "Be", name: "Beryllium", m: 9.012, v: "II", c: "[He] 2s²", x: 2, y: 2 },
-        { n: 5, s: "B", name: "Boron", m: 10.81, v: "III", c: "[He] 2s² 2p¹", x: 13, y: 2 },
-        { n: 6, s: "C", name: "Carbon", m: 12.011, v: "IV", c: "[He] 2s² 2p²", x: 14, y: 2 },
-        { n: 7, s: "N", name: "Nitrogen", m: 14.007, v: "III", c: "[He] 2s² 2p³", x: 15, y: 2 },
-        { n: 8, s: "O", name: "Oxygen", m: 15.999, v: "II", c: "[He] 2s² 2p⁴", x: 16, y: 2 },
-        { n: 9, s: "F", name: "Fluorine", m: 18.998, v: "I", c: "[He] 2s² 2p⁵", x: 17, y: 2 },
-        { n: 10, s: "Ne", name: "Neon", m: 20.180, v: "0", c: "[He] 2s² 2p⁶", x: 18, y: 2 },
+        { n: 3, s: "Li", name: "Литий", lat: "Lithium", m: 6.94, v: "I", c: "[He] 2s¹", x: 1, y: 2 },
+        { n: 4, s: "Be", name: "Бериллий", lat: "Beryllium", m: 9.012, v: "II", c: "[He] 2s²", x: 2, y: 2 },
+        { n: 5, s: "B", name: "Бор", lat: "Borum", m: 10.81, v: "III", c: "[He] 2s² 2p¹", x: 13, y: 2 },
+        { n: 6, s: "C", name: "Углерод", lat: "Carboneum", m: 12.011, v: "IV", c: "[He] 2s² 2p²", x: 14, y: 2 },
+        { n: 7, s: "N", name: "Азот", lat: "Nitrogenium", m: 14.007, v: "III", c: "[He] 2s² 2p³", x: 15, y: 2 },
+        { n: 8, s: "O", name: "Кислород", lat: "Oxygenium", m: 15.999, v: "II", c: "[He] 2s² 2p⁴", x: 16, y: 2 },
+        { n: 9, s: "F", name: "Фтор", lat: "Fluorum", m: 18.998, v: "I", c: "[He] 2s² 2p⁵", x: 17, y: 2 },
+        { n: 10, s: "Ne", name: "Неон", lat: "Neon", m: 20.180, v: "0", c: "[He] 2s² 2p⁶", x: 18, y: 2 },
         // ПЕРИОД 3
-        { n: 11, s: "Na", name: "Sodium", m: 22.990, v: "I", c: "[Ne] 3s¹", x: 1, y: 3 },
-        { n: 12, s: "Mg", name: "Magnesium", m: 24.305, v: "II", c: "[Ne] 3s²", x: 2, y: 3 },
-        { n: 13, s: "Al", name: "Aluminum", m: 26.982, v: "III", c: "[Ne] 3s² 3p¹", x: 13, y: 3 },
-        { n: 14, s: "Si", name: "Silicon", m: 28.085, v: "IV", c: "[Ne] 3s² 3p²", x: 14, y: 3 },
-        { n: 15, s: "P", name: "Phosphorus", m: 30.974, v: "V", c: "[Ne] 3s² 3p³", x: 15, y: 3 },
-        { n: 16, s: "S", name: "Sulfur", m: 32.06, v: "VI", c: "[Ne] 3s² 3p⁴", x: 16, y: 3 },
-        { n: 17, s: "Cl", name: "Chlorine", m: 35.45, v: "VII", c: "[Ne] 3s² 3p⁵", x: 17, y: 3 },
-        { n: 18, s: "Ar", name: "Argon", m: 39.948, v: "0", c: "[Ne] 3s² 3p⁶", x: 18, y: 3 }
+        { n: 11, s: "Na", name: "Натрий", lat: "Natrium", m: 22.990, v: "I", c: "[Ne] 3s¹", x: 1, y: 3 },
+        { n: 12, s: "Mg", name: "Магний", lat: "Magnesium", m: 24.305, v: "II", c: "[Ne] 3s²", x: 2, y: 3 },
+        { n: 13, s: "Al", name: "Алюминий", lat: "Aluminium", m: 26.982, v: "III", c: "[Ne] 3s² 3p¹", x: 13, y: 3 },
+        { n: 14, s: "Si", name: "Кремний", lat: "Silicium", m: 28.085, v: "IV", c: "[Ne] 3s² 3p²", x: 14, y: 3 },
+        { n: 15, s: "P", name: "Фосфор", lat: "Phosphorus", m: 30.974, v: "V", c: "[Ne] 3s² 3p³", x: 15, y: 3 },
+        { n: 16, s: "S", name: "Сера", lat: "Sulfur", m: 32.06, v: "VI", c: "[Ne] 3s² 3p⁴", x: 16, y: 3 },
+        { n: 17, s: "Cl", name: "Хлор", lat: "Chlorum", m: 35.45, v: "VII", c: "[Ne] 3s² 3p⁵", x: 17, y: 3 },
+        { n: 18, s: "Ar", name: "Аргон", lat: "Argon", m: 39.948, v: "0", c: "[Ne] 3s² 3p⁶", x: 18, y: 3 }
     ];
 
     function buildTable() {
         const table = document.getElementById('table');
-        table.innerHTML = ""; // Очистка
+        table.innerHTML = ""; 
         elements.forEach(el => {
             const div = document.createElement('div');
             div.className = 'element';
             div.style.gridColumn = el.x;
             div.style.gridRow = el.y;
-            div.innerHTML = `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="name">${el.name}</span>`;
+            div.innerHTML = `<span class="num">${el.n}</span><span class="sym">${el.s}</span><span class="name" style="font-size:0.4rem">${el.name}</span>`;
             div.onclick = () => {
                 document.getElementById('details').innerHTML = `
                     <div class="data-row"><span class="data-label">СИМВОЛ:</span> ${el.s}</div>
+                    <div class="data-row"><span class="data-label">NAME:</span> ${el.name}</div>
+                    <div class="data-row"><span class="data-label">LATIN:</span> <i style="color:#fff">${el.lat}</i></div>
                     <div class="data-row"><span class="data-label">МАССА:</span> ${el.m}</div>
                     <div class="data-row"><span class="data-label">ВАЛЕНТНОСТЬ:</span> ${el.v}</div>
                     <div class="data-row"><span class="data-label">КОНФИГУРАЦИЯ:</span><br>${el.c}</div>
