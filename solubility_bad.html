@@ -110,12 +110,15 @@
         const t = document.getElementById('solTable');
         let h = "<tr><th></th>" + anions.map(a => `<th>${a}</th>`).join('') + "</tr>";
         cations.forEach(c => {
-            h += `<tr><th>${c.s}</th>`;
-            c.r.forEach((res, i) => h += `<td class="res-${res.toLowerCase()}" onclick="mix('${c.s}','${anions[i]}','${res}')">${res}</td>`);
-            h += "</tr>";
+        h += `<tr><th>${c.s}</th>`;
+        c.r.forEach((res, i) => {
+            const ani = anions[i];
+            const data = database[`${c.s}-${ani}`];
+            const colorStyle = (res === "Н" && data) ? `style="color:${data.c}; text-shadow: 0 0 5px ${data.c};"` : "";
+            h += `<td class="res-${res.toLowerCase()}" ${colorStyle} onclick="mix('${c.s}','${ani}','${res}')">${res}</td>`;
         });
-        t.innerHTML = h;
-    }
+        h += "</tr>";
+    });
 
     function mix(cat, ani, res) {
         clearLab();
