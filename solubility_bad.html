@@ -3,47 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L & ⅂ | Лаборатория: Чистая Химия</title>
+    <title>L & ⅂ | ЛАБОРАТОРИЯ: ЧИСТАЯ ХИМИЯ</title>
     <style>
         :root { --emerald: #2ecc71; --dark: #0a0f0d; --gold: #f1c40f; --noble: #e74c3c; }
         body { background: var(--dark); color: #fff; font-family: 'Courier New', monospace; margin: 0; padding: 10px; display: flex; flex-direction: column; align-items: center; }
-        
         .header { text-align: center; border-bottom: 2px solid var(--emerald); width: 100%; max-width: 1200px; padding: 10px 0; margin-bottom: 15px; }
-        .header h1 { color: var(--emerald); text-shadow: 0 0 15px var(--emerald); margin: 0; font-size: 1.2rem; }
-
-        /* РЯД БЕКЕТОВА (ВЕРНУЛ И УЛУЧШИЛ) */
+        .header h1 { color: var(--emerald); text-shadow: 0 0 15px var(--emerald); margin: 0; font-size: 1.1rem; text-transform: uppercase; }
+        
         .beketov { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; margin-bottom: 15px; background: #111; padding: 10px; border: 1px solid var(--gold); border-radius: 5px; max-width: 1100px; }
-        .metal { padding: 4px 6px; border: 1px solid #222; font-size: 0.75rem; cursor: help; }
+        .metal { padding: 4px 6px; border: 1px solid #222; font-size: 0.75rem; }
         .m-active { color: var(--emerald); font-weight: bold; }
         .m-mid { color: var(--gold); }
         .m-noble { color: var(--noble); }
         .m-h { color: #fff; border: 1px solid #fff; }
 
         .main-content { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1300px; }
-
         .table-wrap { overflow-x: auto; background: #111; padding: 10px; border: 1px solid var(--emerald); border-radius: 8px; flex: 1; min-width: 600px; }
         table { border-collapse: collapse; width: 100%; text-align: center; font-size: 0.75rem; }
-        th, td { border: 1px solid #222; padding: 6px; cursor: pointer; }
+        th, td { border: 1px solid #222; padding: 8px; cursor: pointer; transition: 0.2s; }
         th { color: var(--emerald); background: #000; }
-        .res-p { color: #444; } .res-n { font-weight: bold; } .res-m { color: var(--gold); }
+        .res-p { color: #333; }
+        .res-n { font-weight: bold; }
+        .res-m { color: var(--gold); font-weight: bold; }
 
-        .lab-stand { width: 300px; background: #111; border: 2px solid var(--emerald); border-radius: 15px; padding: 15px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 30px rgba(46, 204, 113, 0.1); }
+        .lab-stand { width: 300px; background: #111; border: 2px solid var(--emerald); border-radius: 15px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 30px rgba(46, 204, 113, 0.1); }
         .flask { position: relative; width: 100px; height: 130px; margin: 15px 0; border: 3px solid #fff; border-top: none; border-radius: 0 0 40px 40px; background: rgba(255,255,255,0.05); overflow: hidden; }
-        .liquid { position: absolute; bottom: 0; width: 100%; height: 0%; background: var(--emerald); transition: 1s; opacity: 0.7; }
-        .sediment { position: absolute; bottom: 0; width: 100%; height: 0%; transition: 1.5s; }
+        .liquid { position: absolute; bottom: 0; width: 100%; height: 0%; background: var(--emerald); transition: 1s; opacity: 0.6; }
+        .sediment { position: absolute; bottom: 0; width: 100%; height: 0%; transition: 1.5s; box-shadow: 0 -5px 15px rgba(255,255,255,0.2); }
         
-        .btn-random { background: var(--emerald); color: #000; border: none; padding: 10px; width: 100%; font-weight: bold; cursor: pointer; border-radius: 5px; margin-bottom: 10px; }
-        .btn-random:hover { background: #fff; box-shadow: 0 0 15px var(--emerald); }
+        .btn-random { background: var(--emerald); color: #000; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; border-radius: 5px; margin-bottom: 10px; }
+        #info-text { font-size: 0.8rem; text-align: center; line-height: 1.4; min-height: 60px; }
     </style>
 </head>
 <body>
-    <div class="header"><h1>L & ⅂ | Solubility & Metal Activity Series</h1></div>
+
+<div class="header"><h1>L & ⅂ | Виртуальный Реактор: Чистая Химия</h1></div>
 
 <div class="beketov">
-    <span class="metal m-active">Li</span><span class="metal m-active">K</span><span class="metal m-active">Ba</span><span class="metal m-active">Ca</span><span class="metal m-active">Na</span><span class="metal m-active">Mg</span><span class="metal m-active">Al</span>
-    <span class="metal m-mid">Zn</span><span class="metal m-mid">Cr</span><span class="metal m-mid">Fe</span><span class="metal m-mid">Cd</span><span class="metal m-mid">Co</span><span class="metal m-mid">Ni</span><span class="metal m-mid">Sn</span><span class="metal m-mid">Pb</span>
+    <span class="metal m-active">Li K Ba Ca Na Mg Al</span>
+    <span class="metal m-mid">Zn Cr Fe Cd Co Ni Sn Pb</span>
     <span class="metal m-h">H₂</span>
-    <span class="metal m-noble">Cu</span><span class="metal m-noble">Hg</span><span class="metal m-noble">Ag</span><span class="metal m-noble">Pt</span><span class="metal m-noble">Au</span>
+    <span class="metal m-noble">Cu Hg Ag Pt Au</span>
 </div>
 
 <div class="main-content">
@@ -51,15 +51,15 @@
     <div class="lab-stand">
         <button class="btn-random" onclick="randomMix()">🎲 СЛУЧАЙНЫЙ СИНТЕЗ</button>
         <div class="flask"><div id="liquid" class="liquid"></div><div id="sediment" class="sediment"></div></div>
-        <div id="info-text" style="font-size:0.8rem; text-align:center;">Выберите ионы...</div>
-        <button onclick="clearLab()" style="background:none; border:1px solid #444; color:#666; margin-top:10px; cursor:pointer; font-size:0.7rem;">ОЧИСТИТЬ</button>
+        <div id="info-text">Выберите ионы в таблице...</div>
+        <button onclick="clearLab()" style="background:none; border:1px solid #444; color:#666; margin-top:10px; cursor:pointer; font-size:0.7rem; padding: 5px 10px;">ОЧИСТИТЬ КОЛБУ</button>
     </div>
 </div>
 
 <script>
     const anions = ["OH⁻", "Cl⁻", "Br⁻", "I⁻", "S²⁻", "SO₄²⁻", "CO₃²⁻", "PO₄³⁻", "NO₃⁻"];
     const cations = [
-        { s: "Li⁺", r: ["P","P","P","P","P","P","P","М","P"] },
+        { s: "H⁺", r: ["P","P","P","P","P","P","P","P","P"] },
         { s: "Na⁺", r: ["P","P","P","P","P","P","P","P","P"] },
         { s: "K⁺", r: ["P","P","P","P","P","P","P","P","P"] },
         { s: "NH₄⁺", r: ["P","P","P","P","P","P","P","P","P"] },
@@ -67,58 +67,45 @@
         { s: "Ca²⁺", r: ["М","P","P","P","P","М","Н","Н","P"] },
         { s: "Mg²⁺", r: ["Н","P","P","P","P","P","Н","Н","P"] },
         { s: "Al³⁺", r: ["Н","P","P","P","-","P","Н","Н","P"] },
-        { s: "Zn²⁺", r: ["Н","P","P","P","Н","P","Н","Н","P"] },
         { s: "Fe²⁺", r: ["Н","P","P","P","Н","P","Н","Н","P"] },
         { s: "Fe³⁺", r: ["Н","P","P","P","Н","P","-","Н","P"] },
         { s: "Cu²⁺", r: ["Н","P","P","-","Н","P","-","Н","P"] },
-        { s: "Ag⁺", r: ["-","Н","Н","Н","Н","М","Н","Н","P"] }
+        { s: "Ag⁺", r: ["-","Н","Н","Н","Н","М","Н","Н","P"] },
+        { s: "Zn²⁺", r: ["Н","P","P","P","Н","P","Н","Н","P"] }
     ];
 
     const database = {
-        // ГИДРОКСИДЫ
-        "Cu²⁺-OH⁻": { c: "#3498db", d: "Гидроксид меди(II). Голубой студенистый осадок." },
-        "Fe³⁺-OH⁻": { c: "#a0522d", d: "Гидроксид железа(III). Бурый осадок (цвет ржавчины)." },
-        "Fe²⁺-OH⁻": { c: "#95a5a6", d: "Гидроксид железа(II). Серо-зеленый, буреет на воздухе." },
-        "Mg²⁺-OH⁻": { c: "#ffffff", d: "Гидроксид магния. Белый аморфный осадок." },
-        "Al³⁺-OH⁻": { c: "#ecf0f1", d: "Гидроксид алюминия. Белый гелеобразный осадок." },
-        "Zn²⁺-OH⁻": { c: "#ffffff", d: "Гидроксид цинка. Белый порошкообразный осадок." },
-
-        // СЕРЕБРО (ГАЛОГЕНИДЫ И ДР.)
-        "Ag⁺-Cl⁻": { c: "#ffffff", d: "Хлорид серебра. Белый творожистый. Нерастворим в HNO₃." },
-        "Ag⁺-Br⁻": { c: "#feffca", d: "Бромид серебра. Светло-желтый творожистый осадок." },
-        "Ag⁺-I⁻": { c: "#f1c40f", d: "Иодид серебра. Насыщенно-желтый осадок." },
-        "Ag⁺-S²⁻": { c: "#1a1a1a", d: "Сульфид серебра. Черный налет/осадок." },
-        "Ag⁺-PO₄³⁻": { c: "#f1c40f", d: "Фосфат серебра. Желтый кристаллический осадок." },
-
-        // СУЛЬФИДЫ (ЧЕРНЫЕ И ЦВЕТНЫЕ)
-        "Cu²⁺-S²⁻": { c: "#1a1a1a", d: "Сульфид меди(II). Глубокий черный осадок." },
-        "Fe²⁺-S²⁻": { c: "#2c3e50", d: "Сульфид железа(II). Черный осадок." },
-        "Zn²⁺-S²⁻": { c: "#ffffff", d: "Сульфид цинка. Белый осадок (важный признак!)" },
-
-        // БАРИЙ И КАЛЬЦИЙ
-        "Ba²⁺-SO₄²⁻": { c: "#ffffff", d: "Сульфат бария. Белый мелкокристаллический 'тяжелый' осадок." },
-        "Ba²⁺-CO₃²⁻": { c: "#ffffff", d: "Карбонат бария. Белый плотный осадок." },
-        "Ba²⁺-PO₄³⁻": { c: "#ffffff", d: "Фосфат бария. Белый кристаллический осадок." },
-        "Ca²⁺-CO₃²⁻": { c: "#ffffff", d: "Карбонат кальция. Белый осадок (мел/известняк)." },
-        "Ca²⁺-PO₄³⁻": { c: "#ffffff", d: "Фосфат кальция. Основной компонент костей." },
-
-        // КРЕМНИЕВАЯ КИСЛОТА
-        "H⁺-SiO₃²⁻": { c: "#ecf0f1", d: "Кремниевая кислота. Прозрачно-белый гель." }
+        "Cu²⁺-OH⁻": { c: "#3498db", d: "Гидроксид меди(II). Голубой студенистый." },
+        "Fe³⁺-OH⁻": { c: "#a0522d", d: "Гидроксид железа(III). Бурый осадок." },
+        "Fe²⁺-OH⁻": { c: "#95a5a6", d: "Гидроксид железа(II). Серо-зеленый." },
+        "Ag⁺-Cl⁻": { c: "#ffffff", d: "Хлорид серебра. Белый творожистый." },
+        "Ag⁺-Br⁻": { c: "#feffca", d: "Бромид серебра. Светло-желтый." },
+        "Ag⁺-I⁻": { c: "#f1c40f", d: "Иодид серебра. Насыщенно-желтый." },
+        "Ba²⁺-SO₄²⁻": { c: "#ffffff", d: "Сульфат бария. Белый тяжелый осадок." },
+        "Cu²⁺-S²⁻": { c: "#1a1a1a", d: "Сульфид меди. Черный осадок." },
+        "Fe²⁺-S²⁻": { c: "#2c3e50", d: "Сульфид железа(II). Черный." },
+        "Ag⁺-S²⁻": { c: "#111111", d: "Сульфид серебра. Черный." },
+        "H⁺-SiO₃²⁻": { c: "#ecf0f1", d: "Кремниевая кислота. Белый гель." },
+        "Ca²⁺-CO₃²⁻": { c: "#ffffff", d: "Карбонат кальция. Белый (мел)." },
+        "Zn²⁺-S²⁻": { c: "#ffffff", d: "Сульфид цинка. Белый осадок." },
+        "Ag⁺-PO₄³⁻": { c: "#f1c40f", d: "Фосфат серебра. Желтый." }
     };
 
     function build() {
         const t = document.getElementById('solTable');
         let h = "<tr><th></th>" + anions.map(a => `<th>${a}</th>`).join('') + "</tr>";
         cations.forEach(c => {
-        h += `<tr><th>${c.s}</th>`;
-        c.r.forEach((res, i) => {
-            const ani = anions[i];
-            const data = database[`${c.s}-${ani}`];
-            const colorStyle = (res === "Н" && data) ? `style="color:${data.c}; text-shadow: 0 0 5px ${data.c};"` : "";
-            h += `<td class="res-${res.toLowerCase()}" ${colorStyle} onclick="mix('${c.s}','${ani}','${res}')">${res}</td>`;
+            h += `<tr><th>${c.s}</th>`;
+            c.r.forEach((res, i) => {
+                const ani = anions[i];
+                const data = database[`${c.s}-${ani}`];
+                const style = (res === "Н" && data) ? `style="color:${data.c}; text-shadow:0 0 5px ${data.c};"` : "";
+                h += `<td class="res-${res.toLowerCase()}" ${style} onclick="mix('${c.s}','${ani}','${res}')">${res}</td>`;
+            });
+            h += "</tr>";
         });
-        h += "</tr>";
-    });
+        t.innerHTML = h;
+    }
 
     function mix(cat, ani, res) {
         clearLab();
@@ -132,18 +119,22 @@
             if (res === "Н" || res === "М") {
                 setTimeout(() => {
                     const d = database[`${cat}-${ani}`] || { c: "#555", d: "Осадок образован." };
-                    sed.style.height = res === "Н" ? "30%" : "10%";
+                    sed.style.height = res === "Н" ? "30%" : "12%";
                     sed.style.background = d.c;
                     txt.innerHTML += `<br><span style="color:${d.c}">${d.d}</span>`;
                 }, 800);
+            } else if (res === "P") {
+                setTimeout(() => { txt.innerHTML += `<br><span style="color:var(--emerald)">Растворимо. Осадков нет.</span>`; }, 800);
+            } else {
+                setTimeout(() => { txt.innerHTML += `<br><span style="color:#666">Реакция не идет/разлагается.</span>`; }, 800);
             }
         }, 100);
     }
 
     function randomMix() {
-        const c = cations[Math.floor(Math.random() * cations.length)];
+        const ci = Math.floor(Math.random() * cations.length);
         const ai = Math.floor(Math.random() * anions.length);
-        mix(c.s, anions[ai], c.r[ai]);
+        mix(cations[ci].s, anions[ai], cations[ci].r[ai]);
     }
 
     function clearLab() {
